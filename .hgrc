@@ -1,0 +1,14 @@
+# This is a Mercurial configuration file.
+[ui]
+username=Ron Huang <ron@hng.tw>
+
+[extensions]
+graphlog =
+purge =
+convert =
+pager =
+color =
+rebase =
+
+[pager]
+pager = LESS='FSRX' less
