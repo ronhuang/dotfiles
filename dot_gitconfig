@@ -1,0 +1,53 @@
+[user]
+  name = Ron Huang
+  email = ron.huang@hp.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWZuTXkLx/CyLTyxKx57lmDMTSR+f8fg0qX2iqEK8Ul
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
+[core]
+  autocrlf = false
+  editor = emacsclient -t -a=\\\"\\\"
+  pager = delta
+  sshCommand = 'C:\\Windows\\System32\\OpenSSH\\ssh.exe'
+[color]
+  ui = true
+[pull]
+  ff = only
+[init]
+  defaultBranch = main
+[rerere]
+  enabled = true
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[alias]
+  last = log -1 --stat
+  cp = cherry-pick
+  co = checkout
+  cl = clone
+  ci = commit
+  st = status
+  br = branch
+  unstage = reset HEAD --
+  df = diff
+  dc = diff --cached
+
+  lg = !"git lg1"
+  lg1 = !"git lg1-specific --all"
+  lg2 = !"git lg2-specific --all"
+  lg3 = !"git lg3-specific --all"
+
+  lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar) %C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+  lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+  lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n''          %C(white)% s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+
+  wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+  please = push --force-with-lease
+  commend = commit --amend --no-edit
+[gpg "ssh"]
+  program = "C:/Program Files/1Password/app/8/op-ssh-sign.exe"
+  allowedSignersFile = C:\\Users\\ronhu\\.ssh\\allowed_signers
