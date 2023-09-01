@@ -1,16 +1,10 @@
 [user]
   name = Ron Huang
   email = ron.huang@hp.com
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWZuTXkLx/CyLTyxKx57lmDMTSR+f8fg0qX2iqEK8Ul
-[commit]
-  gpgsign = true
-[gpg]
-  format = ssh
 [core]
   autocrlf = false
   editor = emacsclient -t -a=\\\"\\\"
   pager = delta
-  sshCommand = 'C:\\Windows\\System32\\OpenSSH\\ssh.exe'
 [color]
   ui = true
 [pull]
@@ -48,6 +42,17 @@
   wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
   please = push --force-with-lease
   commend = commit --amend --no-edit
+
+{{- if eq .chezmoi.os "windows" }}
+[user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWZuTXkLx/CyLTyxKx57lmDMTSR+f8fg0qX2iqEK8Ul
+[core]
+  sshCommand = 'C:\\Windows\\System32\\OpenSSH\\ssh.exe'
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
 [gpg "ssh"]
   program = "C:/Program Files/1Password/app/8/op-ssh-sign.exe"
   allowedSignersFile = C:\\Users\\ronhu\\.ssh\\allowed_signers
+{{ end }}
