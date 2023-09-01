@@ -1,4 +1,5 @@
 README.md
+user.js
 {{ if eq .chezmoi.os "windows" }}
 .tmux.conf
 .zprofile
