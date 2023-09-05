@@ -1,7 +1,14 @@
 README.md
 user.js
+
+# Ignore Linux/macOS specific files on Windows
 {{ if eq .chezmoi.os "windows" }}
 .tmux.conf
 .zprofile
 .zshrc
+{{ end }}
+
+# Ignore Windows specific files on Linux/macOS
+{{ if ne .chezmoi.os "windows" }}
+AppData
 {{ end }}
