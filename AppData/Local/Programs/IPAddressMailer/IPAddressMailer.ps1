@@ -27,7 +27,7 @@ function Get-ExternalIPAddress ()
 {
   # Get external IP Address
   $externalIP = Get-NetIPAddress -PrefixOrigin Dhcp -AddressFamily IPv4 | Select-Object -ExpandProperty IPAddress
-  if ($externalIP.Length -gt 1)
+  if ($externalIP -is [array] -and $externalIP.Length -gt 1)
   {
     $externalIP = $externalIP[0]
   }
