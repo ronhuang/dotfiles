@@ -98,3 +98,16 @@
 ;; https://www.reddit.com/r/emacs/comments/10w677y/launch_emacsclient_without_create_new_workspace/j7otrz3/
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
+
+;; Evil snipe
+(after! evil-snipe
+  (setq evil-snipe-scope 'visible)
+  (setq evil-snipe-repeat-scope 'buffer)
+  (setq evil-snipe-spillover-scope 'whole-buffer))
+
+;;
+(setq doom-themes-treemacs-enable-variable-pitch nil)
+
+;;
+(after! org
+  (add-hook! 'org-mode-hook #'mixed-pitch-mode))
