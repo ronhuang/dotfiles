@@ -42,6 +42,10 @@
   wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
   please = push --force-with-lease
   commend = commit --amend --no-edit
+[url "ssh://git@github-partner.azc.ext.hp.com/"]
+  insteadOf = https://github-partner.azc.ext.hp.com/
+[url "ssh://git@github.azc.ext.hp.com/"]
+  insteadOf = https://github.azc.ext.hp.com/
 
 {{- if eq .chezmoi.os "windows" }}
 [user]
