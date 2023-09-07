@@ -46,13 +46,12 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-{{- if eq .chezmoi.os "windows" }}
-(setq org-directory "~/OneDrive - HP Inc/org/")
-(setq org-roam-directory "~/OneDrive - HP Inc/org-roam/")
-{{- else }}
-(setq org-directory "~/org/")
-(setq org-roam-directory "~/org-roam/")
-{{- end }}
+(if IS-WINDOWS
+    (setq org-directory "~/OneDrive - HP Inc/org/")
+  (setq org-directory "~/org/"))
+(if IS-WINDOWS
+    (setq org-roam-directory "~/OneDrive - HP Inc/org-roam/")
+  (setq org-roam-directory "~/org-roam/"))
 
 ;; PlantUML
 (setq plantuml-exec-mode `jar)
@@ -111,3 +110,10 @@
 (use-package! nyan-mode
   :config
   (add-hook 'after-init-hook 'nyan-mode))
+
+(let ((alternatives '("doom-emacs-color2.png"
+                      "doom-emacs-flugo-slant_out_purple-small.png"
+                      "doom-emacs-flugo-slant_out_bw-small.png")))
+  (setq fancy-splash-image
+        (concat doom-user-dir "splash/"
+                (nth (random (length alternatives)) alternatives))))
