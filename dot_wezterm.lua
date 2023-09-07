@@ -19,8 +19,6 @@ config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
 
-{{ if eq .chezmoi.os "windows" -}}
-
 dev_shell = {
   'pwsh.exe',
   '-NoExit',
@@ -30,41 +28,38 @@ dev_shell = {
 pwsh = {
   'C:\\Program Files\\PowerShell\\7\\pwsh.exe',
 }
-
-config.default_prog = pwsh
-
-config.launch_menu = {
-  {
-    label = 'Developer PWSH for VS 2022',
-    args = dev_shell,
-  },
-  {
-    label = 'PowerShell',
-    args = pwsh,
-  },
-  {
-    label = 'Command Prompt',
-    args = { 'C:\\Windows\\System32\\cmd.exe' },
-  },
-}
-
-{{- else -}}
-
 zsh = {
   '/usr/bin/zsh',
   '-l',
 }
 
-config.default_prog = zsh
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+  config.default_prog = pwsh
 
-config.launch_menu = {
-  {
-    label = 'zsh',
-    args = zsh,
-  },
-}
+  config.launch_menu = {
+    {
+      label = 'Developer PWSH for VS 2022',
+      args = dev_shell,
+    },
+    {
+      label = 'PowerShell',
+      args = pwsh,
+    },
+    {
+      label = 'Command Prompt',
+      args = { 'C:\\Windows\\System32\\cmd.exe' },
+    },
+  }
+else
+  config.default_prog = zsh
 
-{{- end }}
+  config.launch_menu = {
+    {
+      label = 'zsh',
+      args = zsh,
+    },
+  }
+end
 
 -- and finally, return the configuration to wezterm
 return config
