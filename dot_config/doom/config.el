@@ -29,7 +29,7 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 (setq doom-font (font-spec :family "FantasqueSansMono NF" :size 13.0)
-      doom-variable-pitch-font (font-spec :family "Alegreya" :size 13.0))
+      doom-variable-pitch-font (font-spec :family "Alegreya Sans" :size 15.0))
 
 (if IS-WINDOWS
     (set-selection-coding-system 'utf-16le-dos)
@@ -99,21 +99,43 @@
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
 
-;;
-(setq doom-themes-treemacs-enable-variable-pitch nil)
+;; Mixed pitch mode
+(use-package! mixed-pitch
+  :hook ((org-mode      . mixed-pitch-mode)
+         (org-roam-mode . mixed-pitch-mode)
+         (LaTeX-mode    . mixed-pitch-mode))
+  :config
+  (setq mixed-pitch-set-height t))
 
-;;
-(after! org
-  (add-hook! 'org-mode-hook #'mixed-pitch-mode))
-
-;; nyan
+;; Nyan Cat
 (use-package! nyan-mode
   :config
   (add-hook 'after-init-hook 'nyan-mode))
 
+;; Fancy splash
 (let ((alternatives '("doom-emacs-color2.png"
                       "doom-emacs-flugo-slant_out_purple-small.png"
                       "doom-emacs-flugo-slant_out_bw-small.png")))
   (setq fancy-splash-image
         (concat doom-user-dir "splash/"
                 (nth (random (length alternatives)) alternatives))))
+
+;; Treemacs
+(use-package! treemacs
+  :defer t
+  :config
+  (setq doom-themes-treemacs-enable-variable-pitch nil)
+  ;; alters file icons to be more vscode-esque (better 😼)
+  ;; https://github.com/doomemacs/themes/wiki/Extension:-Treemacs
+  (setq doom-themes-treemacs-theme "doom-colors"))
+
+;; Better font for CJK
+(use-package! unicode-fonts
+  :defer t
+  :config
+  ;; Common math symbols
+  (dolist (unicode-block '("Greek and Coptic"))
+    (push "Sarasa Mono CL" (cadr (assoc unicode-block unicode-fonts-block-font-mapping))))
+  ;; CJK characters
+  (dolist (unicode-block '("CJK Unified Ideographs" "CJK Symbols and Punctuation" "CJK Radicals Supplement" "CJK Compatibility Ideographs"))
+    (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
