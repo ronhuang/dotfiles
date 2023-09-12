@@ -12,7 +12,7 @@ end
 
 -- This is where you actually apply your config choices
 
-config.color_scheme = 'Darcula (base16)'
+config.color_scheme = 'Ef-Winter'
 
 config.font = wezterm.font 'FantasqueSansMono NF'
 config.font_size = 13.0
