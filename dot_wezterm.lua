@@ -19,17 +19,24 @@ config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
 
+vs_template = '&{' ..
+  'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
+  'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..
+  '}'
+vs2022_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+vs2019_path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools"
+
 vs2022_pwsh = {
   'pwsh.exe',
   '-NoExit',
   '-Command',
-  '&{Import-Module "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell 805f0455 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"}',
+  string.format(vs_template, vs2022_path, vs2022_path),
 }
 vs2019_pwsh = {
   'pwsh.exe',
   '-NoExit',
   '-Command',
-  '&{Import-Module "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell 954c1d34 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"}',
+  string.format(vs_template, vs2019_path, vs2019_path),
 }
 pwsh = {
   'C:\\Program Files\\PowerShell\\7\\pwsh.exe',
