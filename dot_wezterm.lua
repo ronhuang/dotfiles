@@ -19,11 +19,17 @@ config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
 
-dev_shell = {
+vs2022_pwsh = {
   'pwsh.exe',
   '-NoExit',
   '-Command',
   '&{Import-Module "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell 805f0455 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"}',
+}
+vs2019_pwsh = {
+  'pwsh.exe',
+  '-NoExit',
+  '-Command',
+  '&{Import-Module "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell 954c1d34 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"}',
 }
 pwsh = {
   'C:\\Program Files\\PowerShell\\7\\pwsh.exe',
@@ -34,12 +40,16 @@ zsh = {
 }
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.default_prog = pwsh
+  config.default_prog = vs2019_pwsh
 
   config.launch_menu = {
     {
       label = 'Developer PWSH for VS 2022',
-      args = dev_shell,
+      args = vs2022_pwsh,
+    },
+    {
+      label = 'Developer PWSH for VS 2019',
+      args = vs2019_pwsh,
     },
     {
       label = 'PowerShell',
