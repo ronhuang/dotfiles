@@ -78,5 +78,52 @@ else
   }
 end
 
+-- Key bindings
+config.leader = { key = 't', mods = 'CTRL', timeout_milliseconds = 1000, }
+config.keys = {
+  {
+    key = 't',
+    mods = 'LEADER|CTRL',
+    action = wezterm.action.ActivateLastTab,
+  },
+  {
+    key = 't',
+    mods = 'LEADER',
+    action = wezterm.action.SendKey { key = 't' },
+  },
+  {
+    key = 'c',
+    mods = 'LEADER',
+    action = wezterm.action.SpawnTab 'DefaultDomain',
+  },
+  {
+    key = 'n',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTabRelative(1),
+  },
+  {
+    key = 'p',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTabRelative(-1),
+  },
+  {
+    key = '&',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.CloseCurrentTab { confirm = true },
+  },
+  {
+    key = '0',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTab(9),
+  },
+}
+for i = 1, 9 do
+  table.insert(config.keys, {
+    key = tostring(i),
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTab(i - 1),
+  })
+end
+
 -- and finally, return the configuration to wezterm
 return config
