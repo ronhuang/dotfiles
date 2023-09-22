@@ -89,7 +89,7 @@ config.keys = {
   {
     key = 't',
     mods = 'LEADER',
-    action = wezterm.action.SendKey { key = 't' },
+    action = wezterm.action.SendKey { key = 't', mods = 'CTRL' },
   },
   {
     key = 'c',
