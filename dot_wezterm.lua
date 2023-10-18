@@ -18,6 +18,7 @@ config.font = wezterm.font 'FantasqueSansMono NF'
 config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
+config.hide_tab_bar_if_only_one_tab = true
 
 vs_template = '&{' ..
   'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
@@ -97,6 +98,25 @@ config.keys = {
     action = wezterm.action.SpawnTab 'DefaultDomain',
   },
   {
+    key = 'C',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+  },
+  {
+    key = '|',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.SplitHorizontal {
+      domain = 'CurrentPaneDomain',
+    },
+  },
+  {
+    key = '-',
+    mods = 'LEADER',
+    action = wezterm.action.SplitVertical {
+      domain = 'CurrentPaneDomain',
+    },
+  },
+  {
     key = 'n',
     mods = 'LEADER',
     action = wezterm.action.ActivateTabRelative(1),
@@ -105,6 +125,26 @@ config.keys = {
     key = 'p',
     mods = 'LEADER',
     action = wezterm.action.ActivateTabRelative(-1),
+  },
+  {
+    key = 'l',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Right',
+  },
+  {
+    key = 'h',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Left',
+  },
+  {
+    key = 'j',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Down',
+  },
+  {
+    key = 'k',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Up',
   },
   {
     key = '&',
@@ -117,6 +157,7 @@ config.keys = {
     action = wezterm.action.ActivateTab(9),
   },
 }
+
 for i = 1, 9 do
   table.insert(config.keys, {
     key = tostring(i),
