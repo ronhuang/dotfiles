@@ -18,7 +18,15 @@ config.font = wezterm.font 'FantasqueSansMono NF'
 config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
+
+config.background = {
+  {
+    source = {
+      File = os.getenv("HOME") .. '/.config/wezterm/background/flying-toaster.png',
+    },
+    hsb = { brightness = 0.05 },
+  },
+}
 
 vs_template = '&{' ..
   'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
