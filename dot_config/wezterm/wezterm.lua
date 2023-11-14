@@ -24,7 +24,7 @@ config.background = {
     source = {
       File = os.getenv("HOME") .. '/.config/wezterm/background/flying-toaster.png',
     },
-    hsb = { brightness = 0.005 },
+    hsb = { brightness = 0.05 },
   },
 }
 
