@@ -56,6 +56,21 @@
 ;; PlantUML
 (setq plantuml-exec-mode `jar)
 
+;; Configure the Modus Themes' appearance
+(setq modus-themes-mode-line '(moody borderless)
+      modus-themes-bold-constructs t
+      modus-themes-italic-constructs t
+      modus-themes-fringes 'subtle
+      modus-themes-hl-line '(intense)
+      modus-themes-paren-match '(intense)
+      modus-themes-syntax '(alt-syntax)
+      modus-themes-org-blocks 'gray-background
+      modus-themes-headings
+      '((1 . (overline 1.4))
+        (2 . (overline 1.3))
+        (3 . (overline 1.2))
+        (t . (monochrome 1.1))))
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
