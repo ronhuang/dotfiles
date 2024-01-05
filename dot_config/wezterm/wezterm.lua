@@ -88,17 +88,17 @@ else
 end
 
 -- Key bindings
-config.leader = { key = 't', mods = 'CTRL', timeout_milliseconds = 1000, }
+config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000, }
 config.keys = {
   {
-    key = 't',
+    key = 'Space',
     mods = 'LEADER|CTRL',
     action = wezterm.action.ActivateLastTab,
   },
   {
-    key = 't',
+    key = 'Space',
     mods = 'LEADER',
-    action = wezterm.action.SendKey { key = 't', mods = 'CTRL' },
+    action = wezterm.action.SendKey { key = 'Space', mods = 'CTRL' },
   },
   {
     key = 'c',
@@ -164,12 +164,17 @@ config.keys = {
     mods = 'LEADER',
     action = wezterm.action.ActivateTab(9),
   },
+  {
+    key = '0',
+    mods = 'ALT',
+    action = wezterm.action.ActivateTab(9),
+  },
 }
 
 for i = 1, 9 do
   table.insert(config.keys, {
     key = tostring(i),
-    mods = 'LEADER',
+    mods = 'ALT',
     action = wezterm.action.ActivateTab(i - 1),
   })
 end
