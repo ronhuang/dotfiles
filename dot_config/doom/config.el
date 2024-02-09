@@ -7,7 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Ron Huang"
-      user-mail-address "ron.huang@hp.com")
+      user-mail-address "ron@hng.tw")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -47,10 +47,10 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (if IS-WINDOWS
-    (setq org-directory "~/OneDrive - HP Inc/org/")
+    (setq org-directory "~/OneDrive/Apps/org/")
   (setq org-directory "~/org/"))
 (if IS-WINDOWS
-    (setq org-roam-directory "~/OneDrive - HP Inc/org-roam/")
+    (setq org-roam-directory "~/OneDrive/Apps/org-roam/")
   (setq org-roam-directory "~/org-roam/"))
 
 ;; PlantUML
