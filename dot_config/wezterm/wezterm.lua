@@ -32,7 +32,7 @@ vs_template = '&{' ..
   'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
   'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..
   '}'
-vs2022_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+vs2022_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community"
 vs2019_path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools"
 
 vs2022_pwsh = {
@@ -56,7 +56,7 @@ zsh = {
 }
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.default_prog = vs2019_pwsh
+  config.default_prog = vs2022_pwsh
 
   config.launch_menu = {
     {
