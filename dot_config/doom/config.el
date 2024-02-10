@@ -50,8 +50,8 @@
     (setq org-directory "~/OneDrive/Apps/org/")
   (setq org-directory "~/org/"))
 (if IS-WINDOWS
-    (setq org-roam-directory "~/OneDrive/Apps/org-roam/")
-  (setq org-roam-directory "~/org-roam/"))
+    (setq org-roam-directory "~/OneDrive/Apps/org/roam/")
+  (setq org-roam-directory "~/org/roam/"))
 
 ;; PlantUML
 (setq plantuml-exec-mode `jar)
