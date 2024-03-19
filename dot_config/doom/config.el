@@ -154,3 +154,14 @@
   ;; CJK characters
   (dolist (unicode-block '("CJK Unified Ideographs" "CJK Symbols and Punctuation" "CJK Radicals Supplement" "CJK Compatibility Ideographs"))
     (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
+
+(use-package! org-modern
+  :hook (org-mode . global-org-modern-mode)
+  :config
+  (setq org-modern-label-border 0.3)
+  (setq org-modern-table nil))
+
+(use-package! valign
+  :hook ((org-mode markdown-mode) . valign-mode))
+  :config
+  (setq valign-fancy-bar t))
