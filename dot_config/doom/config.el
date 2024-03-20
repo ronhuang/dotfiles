@@ -162,6 +162,6 @@
   (setq org-modern-table nil))
 
 (use-package! valign
-  :hook ((org-mode markdown-mode) . valign-mode))
+  :hook ((org-mode markdown-mode) . valign-mode)
   :config
   (setq valign-fancy-bar t))
