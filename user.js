@@ -255,7 +255,7 @@ user_pref("font.name-list.serif.zh-CN", "Microsoft YaHei, SimSun, MS Song, SimSu
 user_pref("font.name-list.serif.zh-HK", "Microsoft JhengHei, Times New Roman, MingLiu_HKSCS, Ming(for ISO10646), MingLiU, MingLiU_HKSCS-ExtB, Microsoft JhengHei");
 user_pref("font.name-list.serif.zh-TW", "Microsoft JhengHei, Times New Roman, PMingLiu, MingLiU, MingLiU-ExtB");
 
-user_pref("font.name.monospace.x-western", "FantasqueSansMono NF");
+user_pref("font.name.monospace.x-western", "FantasqueSansM Nerd Font Mono");
 user_pref("font.name.sans-serif.x-western", "Alegreya Sans");
 user_pref("font.name.serif.x-western", "Alegreya");
 

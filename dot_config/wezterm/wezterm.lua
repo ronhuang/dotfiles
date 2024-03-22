@@ -14,7 +14,7 @@ end
 
 config.color_scheme = 'Modus-Vivendi'
 
-config.font = wezterm.font 'FantasqueSansMono NF'
+config.font = wezterm.font 'FantasqueSansM Nerd Font Mono'
 config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
