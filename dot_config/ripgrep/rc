@@ -1,0 +1,11 @@
+--type-add
+inf:*.inf
+
+--type-add
+dec:*.dec
+
+--type-add
+dsc:*.dsc
+
+--type-add
+fdf:*.fdf
