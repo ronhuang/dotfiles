@@ -28,12 +28,12 @@
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
-(if IS-WINDOWS
+(if (featurep :system 'windows)
     (setq doom-font (font-spec :family "FantasqueSansMono NF" :size 13.0))
   (setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 13.0)))
 (setq doom-variable-pitch-font (font-spec :family "Alegreya Sans" :size 15.0))
 
-(if IS-WINDOWS
+(if (featurep :system 'windows)
     (set-selection-coding-system 'utf-16le-dos)
   (set-selection-coding-system 'utf-8))
 
