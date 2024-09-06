@@ -52,7 +52,11 @@ vs2019_pwsh = {
   string.format(vs_template, vs2019_path, vs2019_path),
 }
 pwsh = {
-  'C:\\Program Files\\PowerShell\\7\\pwsh.exe',
+  'pwsh.exe',
+}
+git_bash = {
+  'C:\\Program Files\\Git\\bin\\bash.exe',
+  '--login',
 }
 zsh = {
   '/usr/bin/zsh',
@@ -74,6 +78,10 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     {
       label = 'PowerShell',
       args = pwsh,
+    },
+    {
+      label = 'Git Bash',
+      args = git_bash,
     },
     {
       label = 'Command Prompt',
