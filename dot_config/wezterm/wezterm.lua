@@ -15,7 +15,7 @@ end
 config.color_scheme = 'Modus-Vivendi'
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.font = wezterm.font 'FantasqueSansMono NF'
+  config.font = wezterm.font 'FantasqueSansM Nerd Font'
 else
   config.font = wezterm.font 'FantasqueSansM Nerd Font Mono'
 end
