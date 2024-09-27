@@ -87,3 +87,6 @@ Invoke-Expression (&starship init powershell)
 
 # better cd
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+# ripgrep config
+$env:RIPGREP_CONFIG_PATH="$env:USERPROFILE\.config\ripgrep\rc"
