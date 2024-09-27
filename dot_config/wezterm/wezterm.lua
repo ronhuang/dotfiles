@@ -23,15 +23,6 @@ config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
 
-config.background = {
-  {
-    source = {
-      File = os.getenv("HOME") .. '/.config/wezterm/background/flying-toaster.png',
-    },
-    hsb = { brightness = 0.05 },
-  },
-}
-
 vs_template = '&{' ..
   'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
   'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..
