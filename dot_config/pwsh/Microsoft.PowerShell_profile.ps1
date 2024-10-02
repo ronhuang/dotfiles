@@ -93,3 +93,6 @@ $env:RIPGREP_CONFIG_PATH="$env:USERPROFILE\.config\ripgrep\rc"
 
 # eza config
 $env:EZA_CONFIG_DIR="$env:USERPROFILE\.config\eza"
+
+# komorebi config
+$env:KOMOREBI_CONFIG_HOME="$env:USERPROFILE\.config\komorebi"
