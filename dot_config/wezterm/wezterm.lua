@@ -14,11 +14,7 @@ end
 
 config.color_scheme = 'Modus-Vivendi'
 
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.font = wezterm.font 'FantasqueSansM Nerd Font'
-else
-  config.font = wezterm.font 'FantasqueSansM Nerd Font Mono'
-end
+config.font = wezterm.font 'FantasqueSansM Nerd Font'
 config.font_size = 13.0
 
 config.window_decorations = "RESIZE"
