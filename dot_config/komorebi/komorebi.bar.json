@@ -9,11 +9,10 @@
       "bottom": 40
     }
   },
-  "font_family": "JetBrains Mono",
+  "font_family": "FantasqueSansM Nerd Font",
   "theme": {
     "palette": "Base16",
-    "name": "Ashes",
-    "accent": "Base0D"
+    "name": "Ashes"
   },
   "left_widgets": [
     {
