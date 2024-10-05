@@ -48,12 +48,9 @@ function Invoke-EzaTree
     eza.exe --icons --tree @Args
 }
 
-if ($env:USERDNSDOMAIN -ne 'auth.hpicorp.net')
-{
-    Set-Alias -Name ls -Value Invoke-Eza
-    Set-Alias -Name l -Value Invoke-EzaLong
-    Set-Alias -Name lt -Value Invoke-EzaTree
-}
+Set-Alias -Name ls -Value Invoke-Eza
+Set-Alias -Name l -Value Invoke-EzaLong
+Set-Alias -Name lt -Value Invoke-EzaTree
 
 # emulate which on pwsh
 function Invoke-Which
