@@ -9,7 +9,8 @@
   "border_width": 0,
   "border_offset": -1,
   "animation": {
-    "enabled": true
+    "enabled": true,
+    "duration": 125
   },
   "theme": {
     "palette": "Base16",
