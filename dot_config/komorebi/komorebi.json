@@ -12,6 +12,7 @@
     "enabled": true,
     "duration": 125
   },
+  "mouse_follows_focus": false,
   "theme": {
     "palette": "Base16",
     "name": "Ashes"
@@ -32,7 +33,7 @@
         },
         {
           "name": "II",
-          "layout": "VerticalStack"
+          "layout": "Grid"
         },
         {
           "name": "III",
@@ -40,7 +41,7 @@
         },
         {
           "name": "IV",
-          "layout": "UltrawideVerticalStack"
+          "layout": "VerticalStack"
         },
         {
           "name": "V",
@@ -48,7 +49,7 @@
         },
         {
           "name": "VI",
-          "layout": "Grid"
+          "layout": "UltrawideVerticalStack"
         },
         {
           "name": "VII",
