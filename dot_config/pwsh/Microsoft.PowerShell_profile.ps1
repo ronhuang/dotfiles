@@ -69,7 +69,12 @@ function Invoke-Which
 Set-Alias -Name which -Value Invoke-Which
 
 # remove concusing alias/functions
-$confusing = @("Alias:\rm", "Alias:\rmdir", "Function:\mkdir")
+$confusing = @(
+    "Alias:\mv",
+    "Alias:\rm",
+    "Alias:\rmdir",
+    "Function:\mkdir"
+)
 foreach ($c in $confusing)
 {
     if (Test-Path $c -PathType Leaf)
