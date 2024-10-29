@@ -14,8 +14,8 @@
   },
   "mouse_follows_focus": false,
   "theme": {
-    "palette": "Base16",
-    "name": "Ashes"
+    "palette": "Catppuccin",
+    "name": "Latte"
   },
   "stackbar": {
     "height": 40,

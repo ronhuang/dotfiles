@@ -11,8 +11,8 @@
   },
   "font_family": "FantasqueSansM Nerd Font",
   "theme": {
-    "palette": "Base16",
-    "name": "Ashes"
+    "palette": "Catppuccin",
+    "name": "Latte"
   },
   "left_widgets": [
     {
