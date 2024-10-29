@@ -9,6 +9,12 @@
       "bottom": 40
     }
   },
+  "position": {
+    "inner_size": {
+      "x": 2560,
+      "y": 40
+    }
+  },
   "font_family": "FantasqueSansM Nerd Font",
   "theme": {
     "palette": "Catppuccin",
