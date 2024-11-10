@@ -37,11 +37,11 @@
         },
         {
           "name": "III",
-          "layout": "HorizontalStack"
+          "layout": "VerticalStack"
         },
         {
           "name": "IV",
-          "layout": "VerticalStack"
+          "layout": "HorizontalStack"
         },
         {
           "name": "V",
