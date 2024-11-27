@@ -70,16 +70,19 @@ Set-Alias -Name which -Value Invoke-Which
 
 # remove concusing alias/functions
 $confusing = @(
+    "Alias:\cp",
+    "Alias:\diff",
     "Alias:\mv",
     "Alias:\rm",
     "Alias:\rmdir",
+    "Alias:\sort",
     "Function:\mkdir"
 )
 foreach ($c in $confusing)
 {
     if (Test-Path $c -PathType Leaf)
     {
-        Remove-Item $c
+        Remove-Item $c -Force
     }
 }
 
