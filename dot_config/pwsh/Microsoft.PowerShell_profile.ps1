@@ -8,8 +8,12 @@ Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 # fzf on pwsh
 Import-Module PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-$env:FZF_CTRL_R_OPTS="--no-sort --exact --height 40%  --reverse --border"
+Set-PsFzfOption `
+  -PSReadlineChordProvider 'Ctrl+t' `
+  -PSReadlineChordReverseHistory 'Ctrl+r' `
+  -EnableAliasFuzzyKillProcess `
+  -EnableFd
+$env:FZF_CTRL_R_OPTS="--no-sort --exact"
 
 # fun
 function rpg
