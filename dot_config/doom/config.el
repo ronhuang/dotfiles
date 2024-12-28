@@ -29,7 +29,8 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 (setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 13.0)
-      doom-variable-pitch-font (font-spec :family "Alegreya Sans" :size 15.0))
+      doom-variable-pitch-font (font-spec :family "Alegreya Sans" :size 15.0)
+      doom-symbol-font (font-spec :family "Sarasa Mono TC" :size 14.0))
 
 (if (featurep :system 'windows)
     (set-selection-coding-system 'utf-16le-dos)
