@@ -1,3 +1,22 @@
+[column]
+  ui = auto
+[branch]
+  sort = -committerdate
+[tag]
+  sort = version:refname
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+[help]
+  autocorrect = prompt
+[merge]
+  conflictStyle = zdiff3
 [user]
   name = Ron Huang
   email = ron@hng.tw
@@ -13,6 +32,7 @@
   defaultBranch = main
 [rerere]
   enabled = true
+  autoupdate = true
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
@@ -70,7 +90,6 @@
   path = c:/Program Files/Beyond Compare 4/bcomp.exe
 [merge]
   tool = bc
-  conflictStyle = diff3
 [mergetool "bc"]
   path = c:/Program Files/Beyond Compare 4/bcomp.exe
 {{- end }}
