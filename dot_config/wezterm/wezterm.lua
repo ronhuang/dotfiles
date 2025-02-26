@@ -49,6 +49,10 @@ zsh = {
   '/usr/bin/zsh',
   '-l',
 }
+xonsh = {
+  'xonsh',
+  '--login',
+}
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   config.default_prog = pwsh
@@ -65,6 +69,10 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     {
       label = 'PowerShell',
       args = pwsh,
+    },
+    {
+      label = 'xonsh',
+      args = xonsh,
     },
     {
       label = 'Git Bash',
