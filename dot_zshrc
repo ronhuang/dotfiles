@@ -103,8 +103,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls='eza'
-alias e="emacsclient -t -a ''"
-alias ec="emacsclient -c -n -a ''"
+alias e="emacsclient -c -n -a ''"
+alias ec="emacsclient -t -a ''"
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
