@@ -1,22 +1,26 @@
 from pathlib import Path
 
 # 1Password SSH agent
-f = Path.home() / '.1password' / 'agent.sock'
-if f.exists():
-    $SSH_AUTH_SOCK = str(f)
+sock = p'~/.1password/agent.sock'
+if sock.exists():
+    $SSH_AUTH_SOCK = str(sock)
 
 # add Doom Emacs to PATH
-$PATH.insert(0, str(Path.home() / '.config' / 'emacs' / 'bin'))
+doom = p'~/.config/emacs/bin'
+if doom.exists():
+    $PATH.insert(0, doom)
 
 # add local to PATH
-$PATH.insert(0, str(Path.home() / '.local' / 'bin'))
+local = p'~/.local/bin'
+if local.exists():
+    $PATH.insert(0, local)
 
 # aliases
 aliases['ls'] = ['eza', '--icons']
 aliases['l'] = ['eza', '--icons', '-l']
 aliases['lt'] = ['eza', '--icons', '--tree']
-aliases['e'] = ['emacsclient', '-c', '-n', '-a', '\'\'']
-aliases['ec'] = ['emacsclient', '-t', '-a', '\'\'']
+aliases['e'] = ['emacsclient', '-c', '-n', '-a', '']
+aliases['ec'] = ['emacsclient', '-t', '-a', '']
 
 # better prompt
 $VIRTUAL_ENV_DISABLE_PROMPT = True
