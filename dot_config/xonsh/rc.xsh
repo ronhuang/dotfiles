@@ -1,3 +1,16 @@
+from pathlib import Path
+
+# 1Password SSH agent
+f = Path.home() / '.1password' / 'agent.sock'
+if f.exists():
+    $SSH_AUTH_SOCK = str(f)
+
+# add Doom Emacs to PATH
+$PATH.insert(0, str(Path.home() / '.config' / 'emacs' / 'bin'))
+
+# add local to PATH
+$PATH.insert(0, str(Path.home() / '.local' / 'bin'))
+
 # aliases
 aliases['ls'] = ['eza', '--icons']
 aliases['l'] = ['eza', '--icons', '-l']
