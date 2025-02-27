@@ -1,7 +1,7 @@
 # aliases
-aliases['ls'] = ['exa', '--icons']
-aliases['l'] = ['exa', '--icons', '-l']
-aliases['lt'] = ['exa', '--icons', '--tree']
+aliases['ls'] = ['eza', '--icons']
+aliases['l'] = ['eza', '--icons', '-l']
+aliases['lt'] = ['eza', '--icons', '--tree']
 aliases['e'] = ['emacsclient', '-c', '-n', '-a', '\'\'']
 aliases['ec'] = ['emacsclient', '-t', '-a', '\'\'']
 
