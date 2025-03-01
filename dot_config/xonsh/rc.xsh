@@ -1,5 +1,8 @@
 from pathlib import Path
 
+# Sqlite history backend
+$XONSH_HISTORY_BACKEND = 'sqlite'
+
 # 1Password SSH agent
 sock = p'~/.1password/agent.sock'
 if sock.exists():
@@ -8,12 +11,12 @@ if sock.exists():
 # add Doom Emacs to PATH
 doom = p'~/.config/emacs/bin'
 if doom.exists():
-    $PATH.insert(0, doom)
+    $PATH.prepend(doom)
 
 # add local to PATH
 local = p'~/.local/bin'
 if local.exists():
-    $PATH.insert(0, local)
+    $PATH.prepend(local)
 
 # aliases
 aliases['ls'] = ['eza', '--icons']
