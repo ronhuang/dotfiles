@@ -55,7 +55,7 @@ xonsh = {
 }
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.default_prog = pwsh
+  config.default_prog = xonsh
 
   config.launch_menu = {
     {
