@@ -18,6 +18,12 @@ local = p'~/.local/bin'
 if local.exists():
     $PATH.prepend(local)
 
+# fzf
+$fzf_history_binding = 'c-r'
+$fzf_file_binding = 'c-t'
+$FZF_CTRL_R_OPTS = '--no-sort --exact'
+xontrib load fzf-completions
+
 # aliases
 aliases['ls'] = ['eza', '--icons']
 aliases['l'] = ['eza', '--icons', '-l']
