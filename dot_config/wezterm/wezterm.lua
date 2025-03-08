@@ -10,88 +10,85 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+-- Include homebrew to PATH
+if wezterm.target_triple == "aarch64-apple-darwin" then
+  config.set_environment_variables = {
+    PATH = '/opt/homebrew/bin:' .. os.getenv('PATH')
+  }
+end
+
 -- This is where you actually apply your config choices
 
 config.color_scheme = 'Modus-Vivendi'
 
 config.font = wezterm.font 'FantasqueSansM Nerd Font Mono'
+
 config.font_size = 13.0
+if wezterm.target_triple == "aarch64-apple-darwin" then
+  config.font_size = 17.0
+end
 
 config.window_decorations = "RESIZE"
 
-vs_template = '&{' ..
-  'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
-  'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..
-  '}'
-vs2022_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community"
-vs2019_path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools"
+config.default_prog = xonsh
 
-vs2022_pwsh = {
-  'pwsh.exe',
-  '-NoExit',
-  '-Command',
-  string.format(vs_template, vs2022_path, vs2022_path),
-}
-vs2019_pwsh = {
-  'pwsh.exe',
-  '-NoExit',
-  '-Command',
-  string.format(vs_template, vs2019_path, vs2019_path),
-}
-pwsh = {
-  'pwsh.exe',
-}
-git_bash = {
-  'C:\\Program Files\\Git\\bin\\bash.exe',
-  '--login',
-}
-zsh = {
-  '/usr/bin/zsh',
-  '-l',
-}
-xonsh = {
-  'xonsh',
-  '--login',
+config.launch_menu = {
+  {
+    label = 'xonsh',
+    args = {
+      'xonsh',
+      '--login',
+    },
+  },
 }
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-  config.default_prog = xonsh
+  table.insert(config.launch_menu, {
+    label = 'PowerShell',
+    args = { 'pwsh.exe' },
+  })
 
-  config.launch_menu = {
-    {
-      label = 'Developer PWSH for VS 2022',
-      args = vs2022_pwsh,
+  table.insert(config.launch_menu, {
+    label = 'Command Prompt',
+    args = { 'cmd.exe' },
+  })
+
+  table.insert(config.launch_menu, {
+    label = 'Git Bash',
+    args = { 'C:\\Program Files\\Git\\bin\\bash.exe', '--login' },
+  })
+
+  vs_template = '&{' ..
+    'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
+    'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..
+    '}'
+  vs2022_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community"
+  vs2019_path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools"
+
+  table.insert(config.launch_menu, {
+    label = 'Developer PWSH for VS 2022',
+    args = {
+      'pwsh.exe',
+      '-NoExit',
+      '-Command',
+      string.format(vs_template, vs2022_path, vs2022_path),
     },
-    {
-      label = 'Developer PWSH for VS 2019',
-      args = vs2019_pwsh,
+  })
+
+  table.insert(config.launch_menu, {
+    label = 'Developer PWSH for VS 2019',
+    args = {
+      'pwsh.exe',
+      '-NoExit',
+      '-Command',
+      string.format(vs_template, vs2019_path, vs2019_path),
     },
-    {
-      label = 'PowerShell',
-      args = pwsh,
-    },
-    {
-      label = 'xonsh',
-      args = xonsh,
-    },
-    {
-      label = 'Git Bash',
-      args = git_bash,
-    },
-    {
-      label = 'Command Prompt',
-      args = { 'C:\\Windows\\System32\\cmd.exe' },
-    },
-  }
+  })
 else
-  config.default_prog = zsh
-
-  config.launch_menu = {
-    {
-      label = 'zsh',
-      args = zsh,
-    },
-  }
+  table.insert(config.launch_menu, {
+    label = 'zsh',
+    args = { 'zsh', '--login' }
+  })
 end
 
 -- Key bindings
