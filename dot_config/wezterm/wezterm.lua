@@ -30,15 +30,13 @@ end
 
 config.window_decorations = "RESIZE"
 
+xonsh = { 'xonsh', '--login' }
 config.default_prog = xonsh
 
 config.launch_menu = {
   {
     label = 'xonsh',
-    args = {
-      'xonsh',
-      '--login',
-    },
+    args = xonsh,
   },
 }
 
