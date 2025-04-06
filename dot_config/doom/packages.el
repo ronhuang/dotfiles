@@ -7,6 +7,7 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;; (package! some-package)
+(package! mixed-pitch)
 (package! nyan-mode)
 (package! ef-themes)
 (package! robot-mode)
