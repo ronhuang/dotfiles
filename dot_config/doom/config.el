@@ -173,18 +173,6 @@
 (after! org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
-;; gptel
-(use-package! gptel
-  :config
-  (setq
-   gptel-model `llama3.2:latest
-   gptel-backend (gptel-make-ollama "Ollama"
-                   :host "localhost:11434"
-                   :stream t
-                   :models '((llama3.1:latest)
-                             (llama3.2:latest)
-                             (deepseek-r1:latest)))))
-
 ;; Restore evil-escape
 (after! evil-escape
   (setq evil-escape-key-sequence "jk"))
