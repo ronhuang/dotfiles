@@ -184,3 +184,7 @@
                    :models '((llama3.1:latest)
                              (llama3.2:latest)
                              (deepseek-r1:latest)))))
+
+;; Restore evil-escape
+(after! evil-escape
+  (setq evil-escape-key-sequence "jk"))
