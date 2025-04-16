@@ -1,5 +1,8 @@
 from pathlib import Path
 
+# make ctrl-k and ctrl-y behavior correctly
+$XONSH_COPY_ON_DELETE = True
+
 # Sqlite history backend
 $XONSH_HISTORY_BACKEND = 'sqlite'
 
