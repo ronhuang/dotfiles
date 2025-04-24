@@ -1,4 +1,4 @@
-from pathlib import Path
+from xonsh import platform
 
 # Sqlite history backend
 $XONSH_HISTORY_BACKEND = 'sqlite'
@@ -30,6 +30,8 @@ aliases['l'] = ['eza', '--icons', '-l']
 aliases['lt'] = ['eza', '--icons', '--tree']
 aliases['e'] = ['emacsclient', '-c', '-n', '-a', '']
 aliases['ec'] = ['emacsclient', '-t', '-a', '']
+if platform.ON_WINDOWS:
+    aliases['doom'] = ['pwsh', '-File', '~/.config/emacs/bin/doom.ps1']
 
 # better prompt
 $VIRTUAL_ENV_DISABLE_PROMPT = True
