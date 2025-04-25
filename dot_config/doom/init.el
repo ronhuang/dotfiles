@@ -152,7 +152,7 @@
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +roam2 +present +pandoc)        ; organize your plain life in plain text
+       (org +roam2 +pretty)        ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;graphviz          ; diagrams for confusing yourself even more
@@ -173,7 +173,7 @@
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
-       (yaml +lsp +tree-sitter)  ; JSON, but readable
+       (yaml +tree-sitter)  ; JSON, but readable
        (zig +lsp +tree-sitter)  ; C, but simpler
 
        :email

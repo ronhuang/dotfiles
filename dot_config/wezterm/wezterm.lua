@@ -56,6 +56,11 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     args = { 'C:\\Program Files\\Git\\bin\\bash.exe', '--login' },
   })
 
+  table.insert(config.launch_menu, {
+    label = 'MSYS2 MINGW64',
+    args = { 'C:\\msys64\\msys2_shell.cmd', '-defterm', '-here', '-no-start', '-mingw64' },
+  })
+
   vs_template = '&{' ..
     'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
     'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"' ..

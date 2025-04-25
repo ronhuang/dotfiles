@@ -11,7 +11,6 @@
 (package! nyan-mode)
 (package! ef-themes)
 (package! robot-mode)
-(package! org-modern)
 (package! valign)
 (package! ascii-table)
 (package! xonsh-mode)

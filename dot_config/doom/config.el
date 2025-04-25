@@ -28,11 +28,9 @@
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
-(if (featurep :system 'macos)
-    (setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 15.0))
-  (setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 13.0)))
-(setq doom-variable-pitch-font (font-spec :family "Alegreya Sans" :size 15.0)
-      doom-symbol-font (font-spec :family "Sarasa Mono TC" :size 14.0))
+(setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 16.0)
+      doom-variable-pitch-font (font-spec :family "Atkinson Hyperlegible Next" :size 16.0)
+      doom-symbol-font (font-spec :family "Sarasa Mono TC" :size 16.0))
 
 (if (featurep :system 'windows)
     (set-selection-coding-system 'utf-16le-dos)
@@ -157,13 +155,9 @@
   (dolist (unicode-block '("CJK Unified Ideographs" "CJK Symbols and Punctuation" "CJK Radicals Supplement" "CJK Compatibility Ideographs"))
     (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
 
-(use-package! org-modern
-  :hook (org-mode . global-org-modern-mode)
-  :config
-  (setq org-modern-table nil))
-
+;;
 (use-package! valign
-  :hook ((org-mode markdown-mode) . valign-mode)
+  :hook ((markdown-mode . valign-mode))
   :config
   (setq valign-fancy-bar t))
 
@@ -176,3 +170,52 @@
 ;; Restore evil-escape
 (after! evil-escape
   (setq evil-escape-key-sequence "jk"))
+
+;; Disable org-indent-mode
+(after! org
+  (setq org-startup-indented nil))
+
+;; Custom faces
+(after! org
+  ;; Set some faces
+  (custom-set-faces!
+    `((org-quote)
+      :foreground ,(doom-color 'blue) :extend t)
+    `((org-block-begin-line org-block-end-line)
+      :background ,(doom-color 'bg)))
+  ;; Change how LaTeX and image previews are shown
+  (setq org-highlight-latex-and-related '(native entities script)
+        org-image-actual-width (min (/ (display-pixel-width) 3) 800)))
+
+;; Use the medium weights for org-mode headings
+(after! org-mode
+  (custom-set-faces!
+    `((org-document-title)
+      :foreground ,(face-attribute 'org-document-title :foreground)
+      :height 1.3 :weight bold)
+    `((org-level-1)
+      :foreground ,(face-attribute 'outline-1 :foreground)
+      :height 1.1 :weight medium)
+    `((org-level-2)
+      :foreground ,(face-attribute 'outline-2 :foreground)
+      :weight medium)
+    `((org-level-3)
+      :foreground ,(face-attribute 'outline-3 :foreground)
+      :weight medium)
+    `((org-level-4)
+      :foreground ,(face-attribute 'outline-4 :foreground)
+      :weight medium)
+    `((org-level-5)
+      :foreground ,(face-attribute 'outline-5 :foreground)
+      :weight medium)))
+
+;; Turn off highlighting current line
+(add-hook 'text-mode-hook (lambda () (hl-line-mode -1)))
+
+;; Seemless look
+(use-package! org-appear
+  :hook
+  (org-mode . org-appear-mode)
+  :config
+  (setq org-hide-emphasis-markers t
+        org-appear-autolinks 'just-brackets))
