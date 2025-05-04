@@ -49,3 +49,26 @@ $RIPGREP_CONFIG_PATH = '~/.config/ripgrep/rc'
 
 # eza config
 $EZA_CONFIG_DIR = '~/.config/eza'
+
+# use 1Password SSH agent under WSL environment
+if platform.ON_WSL:
+    $SSH_AUTH_SOCK = p'~/.local/share/1password/agent.sock'
+    # need `ps -ww` to get non-truncated command for matching
+    already_running = len($(ps -auxww | grep "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent")) > 0
+    if not already_running:
+        if $SSH_AUTH_SOCK.is_socket():
+            # not expecting the socket to exist as the forwarding command isn't running
+            print("Removing previous socket...")
+            rm $SSH_AUTH_SOCK
+
+        print("Starting SSH-Agent relay...")
+        # setsid to force new session to keep running
+        # set socat to listen on $SSH_AUTH_SOCK and forward to npiperelay which then forward s to openssh-ssh-agent on windows
+        $npiperelay_path = $(which npiperelay.exe)
+        $(setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &)
+
+# too many Windows path in PATH cause xonsh sluggish
+if platform.ON_WSL:
+    for path in $PATH.paths:
+        if path.startswith('/mnt/c/'):
+            $PATH.remove(path)
