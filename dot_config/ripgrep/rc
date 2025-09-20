@@ -9,3 +9,15 @@ dsc:*.dsc
 
 --type-add
 fdf:*.fdf
+
+--type-add
+uni:*.uni
+
+--type-add
+hfr:*.hfr
+
+--type-add
+qfr:*.qfr
+
+--type-add
+asl:*.asl
