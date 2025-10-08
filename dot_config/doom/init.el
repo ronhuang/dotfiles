@@ -190,6 +190,7 @@
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        lobsters            ; Lobsters client for Emacs
+       hackernews          ; Hacker News client for Emacs
 
        :config
        ;;literate
