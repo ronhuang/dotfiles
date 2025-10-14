@@ -9,6 +9,7 @@
   colorMoved = default
   mnemonicPrefix = true
   renames = true
+  external = difft
 [fetch]
   prune = true
   pruneTags = true
@@ -16,7 +17,10 @@
 [help]
   autocorrect = prompt
 [merge]
-  conflictStyle = zdiff3
+  conflictStyle = diff3
+[merge "mergiraf"]
+  name = mergiraf
+  driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
 [user]
   name = Ron Huang
   email = ron@hng.tw
