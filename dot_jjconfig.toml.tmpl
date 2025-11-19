@@ -3,12 +3,12 @@ name = "Ron Huang"
 email = "ron@hng.tw"
 
 [ui]
+editor = "emacsclient -t -a=\"\""
 pager = "less -FRX"
 default-command = "log"
-editor = "emacsclient -t -a=\\\"\\\""
 
 [signing]
-behavior = "own"
+behavior = "drop"
 backend = "ssh"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWZuTXkLx/CyLTyxKx57lmDMTSR+f8fg0qX2iqEK8Ul"
 {{- if eq .chezmoi.os "windows" }}
@@ -17,3 +17,6 @@ backends.ssh.program = "{{ if ("C:/Program Files/1Password/app/8" | lstat) }}C:/
 backends.ssh.program = "/opt/1Password/op-ssh-sign"
 {{- end }}
 backends.ssh.allowed-signers = "{{ .chezmoi.homeDir }}/.config/git/allowed_signers"
+
+[git]
+sign-on-push = true
