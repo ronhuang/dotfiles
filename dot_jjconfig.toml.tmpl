@@ -4,7 +4,8 @@ email = "ron@hng.tw"
 
 [ui]
 editor = "emacsclient -t -a=\"\""
-pager = "less -FRX"
+pager = "delta"
+diff-formatter = ":git"
 default-command = "log"
 
 [signing]
@@ -20,3 +21,15 @@ backends.ssh.allowed-signers = "{{ .chezmoi.homeDir }}/.config/git/allowed_signe
 
 [git]
 sign-on-push = true
+
+[merge-tools.difft]
+diff-args = ["--color=always", "$left", "$right"]
+
+[merge-tools.bc]
+program = "bcomp"
+edit-args = ["$left", "$right", "/leftreadonly", "/expandall"]
+merge-args = ["$left", "$right", "$base", "$output", "/automerge", "/reviewconflicts"]
+
+[merge-tools.bc-3]
+program = "bcomp"
+edit-args = ["$left", "$right", "/expandall", "/mergeoutput=$right", "/leftreadonly", "/rightreadonly"]
