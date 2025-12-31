@@ -21,7 +21,7 @@ end
 
 config.color_scheme = 'Modus-Vivendi'
 
-config.font = wezterm.font 'FantasqueSansM Nerd Font Mono'
+config.font = wezterm.font('FantasqueSansM Nerd Font Mono', { weight = 'DemiBold' })
 
 config.font_size = 13.0
 if wezterm.target_triple == "aarch64-apple-darwin" then
