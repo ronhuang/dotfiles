@@ -35,8 +35,14 @@ if platform.ON_WINDOWS:
 
 # better prompt
 $VIRTUAL_ENV_DISABLE_PROMPT = True
-$STARSHIP_CONFIG = '~/.config/starship/xonsh.toml'
-xontrib load prompt_starship
+
+if platform.ON_WINDOWS and (p"" / $ProgramFiles / "Zscaler").exists():
+    # starship is too slow with Zscaler
+    # use simpler prompt
+    $PROMPT = '{CYAN}{short_cwd} {RED}{last_return_code_if_nonzero:[{BOLD_INTENSE_RED}{}{RED}] }{RESET}\n{BOLD_GREEN}{prompt_end}{RESET} '
+else:
+    $STARSHIP_CONFIG = '~/.config/starship/xonsh.toml'
+    xontrib load prompt_starship
 
 # better cd
 execx($(zoxide init xonsh), 'exec', __xonsh__.ctx, filename='zoxide')
