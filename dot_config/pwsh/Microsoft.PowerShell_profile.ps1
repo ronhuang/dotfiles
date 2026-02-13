@@ -2,7 +2,10 @@
 Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-Set-PSReadLineOption -PredictionSource History
+if (![System.Console]::IsOutputRedirected)
+{
+  Set-PSReadLineOption -PredictionSource History
+}
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 

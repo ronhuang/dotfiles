@@ -94,83 +94,11 @@ else
   })
 end
 
+-- Support kitty keyboard protocol
+config.enable_kitty_keyboard = true
+
 -- Key bindings
-config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000, }
 config.keys = {
-  {
-    key = 'Space',
-    mods = 'LEADER|CTRL',
-    action = wezterm.action.ActivateLastTab,
-  },
-  {
-    key = 'Space',
-    mods = 'LEADER',
-    action = wezterm.action.SendKey { key = 'Space', mods = 'CTRL' },
-  },
-  {
-    key = 'c',
-    mods = 'LEADER',
-    action = wezterm.action.SpawnTab 'DefaultDomain',
-  },
-  {
-    key = 'C',
-    mods = 'LEADER|SHIFT',
-    action = wezterm.action.SpawnTab 'CurrentPaneDomain',
-  },
-  {
-    key = '|',
-    mods = 'LEADER|SHIFT',
-    action = wezterm.action.SplitHorizontal {
-      domain = 'CurrentPaneDomain',
-    },
-  },
-  {
-    key = '-',
-    mods = 'LEADER',
-    action = wezterm.action.SplitVertical {
-      domain = 'CurrentPaneDomain',
-    },
-  },
-  {
-    key = 'n',
-    mods = 'LEADER',
-    action = wezterm.action.ActivateTabRelative(1),
-  },
-  {
-    key = 'p',
-    mods = 'LEADER',
-    action = wezterm.action.ActivateTabRelative(-1),
-  },
-  {
-    key = 'l',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection 'Right',
-  },
-  {
-    key = 'h',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection 'Left',
-  },
-  {
-    key = 'j',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection 'Down',
-  },
-  {
-    key = 'k',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection 'Up',
-  },
-  {
-    key = '&',
-    mods = 'LEADER|SHIFT',
-    action = wezterm.action.CloseCurrentTab { confirm = true },
-  },
-  {
-    key = '0',
-    mods = 'LEADER',
-    action = wezterm.action.ActivateTab(9),
-  },
   {
     key = '0',
     mods = 'ALT',
