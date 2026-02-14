@@ -33,3 +33,7 @@ merge-args = ["$left", "$right", "$base", "$output", "/automerge", "/reviewconfl
 [merge-tools.bc-3]
 program = "bcomp"
 edit-args = ["$left", "$right", "/expandall", "/mergeoutput=$right", "/leftreadonly", "/rightreadonly"]
+
+[aliases]
+lg = ['log', '-r', 'all()']
+df = ['diff']
