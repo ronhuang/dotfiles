@@ -94,11 +94,13 @@ else
   })
 end
 
--- Support kitty keyboard protocol
-config.enable_kitty_keyboard = true
-
 -- Key bindings
 config.keys = {
+  {
+    key = 'Enter',
+    mods = 'SHIFT',
+    action = wezterm.action.SendString '\n',
+  },
   {
     key = '0',
     mods = 'ALT',
