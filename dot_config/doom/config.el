@@ -72,23 +72,22 @@
 (setq confirm-kill-emacs nil)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
+;; `with-eval-after-load' block, otherwise Doom's defaults may override your
+;; settings. E.g.
 ;;
-;;   (after! PACKAGE
+;;   (with-eval-after-load 'PACKAGE
 ;;     (setq x y))
 ;;
 ;; The exceptions to this rule:
 ;;
 ;;   - Setting file/directory variables (like `org-directory')
 ;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;     package is loaded (see 'C-h v VARIABLE' to look them up).
 ;;   - Setting doom variables (which start with 'doom-' or '+').
 ;;
 ;; Here are some additional functions/macros that will help you configure Doom.
 ;;
 ;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
 ;; - `add-load-path!' for adding directories to the `load-path', relative to
 ;;   this file. Emacs searches the `load-path' when you load packages with
 ;;   `require' or `use-package'.
@@ -105,17 +104,17 @@
 
 ;; launch emacsclient without creating new workspace
 ;; https://www.reddit.com/r/emacs/comments/10w677y/launch_emacsclient_without_create_new_workspace/j7otrz3/
-(after! persp-mode
+(with-eval-after-load `persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
 
 ;; Evil snipe
-(after! evil-snipe
+(with-eval-after-load `evil-snipe
   (setq evil-snipe-scope 'visible)
   (setq evil-snipe-repeat-scope 'buffer)
   (setq evil-snipe-spillover-scope 'whole-buffer))
 
 ;; Mixed pitch mode
-(use-package! mixed-pitch
+(use-package mixed-pitch
   :hook ((org-mode      . mixed-pitch-mode)
          (org-roam-mode . mixed-pitch-mode)
          (LaTeX-mode    . mixed-pitch-mode))
@@ -123,7 +122,7 @@
   (setq mixed-pitch-set-height t))
 
 ;; Nyan Cat
-(use-package! nyan-mode
+(use-package nyan-mode
   :config
   (add-hook 'after-init-hook 'nyan-mode))
 
@@ -136,7 +135,7 @@
                 (nth (random (length alternatives)) alternatives))))
 
 ;; Treemacs
-(use-package! treemacs
+(use-package treemacs
   :defer t
   :config
   (setq doom-themes-treemacs-enable-variable-pitch nil)
@@ -145,7 +144,7 @@
   (setq doom-themes-treemacs-theme "doom-colors"))
 
 ;; Better font for CJK
-(use-package! unicode-fonts
+(use-package unicode-fonts
   :defer t
   :config
   ;; Common math symbols
@@ -156,7 +155,7 @@
     (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
 
 ;;
-(use-package! valign
+(use-package valign
   :hook ((markdown-mode . valign-mode))
   :config
   (setq valign-fancy-bar t))
@@ -168,15 +167,11 @@
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 ;; Restore evil-escape
-(after! evil-escape
+(with-eval-after-load `evil-escape
   (setq evil-escape-key-sequence "jk"))
 
-;; Disable org-indent-mode
-(after! org
-  (setq org-startup-indented nil))
-
 ;; Custom faces
-(after! org
+(with-eval-after-load `org
   ;; Set some faces
   (custom-set-faces!
     `((org-quote)
@@ -188,7 +183,7 @@
         org-image-actual-width (min (/ (display-pixel-width) 3) 800)))
 
 ;; Use the medium weights for org-mode headings
-(after! org-mode
+(with-eval-after-load `org-mode
   (custom-set-faces!
     `((org-document-title)
       :foreground ,(face-attribute 'org-document-title :foreground)
@@ -213,7 +208,7 @@
 (add-hook 'text-mode-hook (lambda () (hl-line-mode -1)))
 
 ;; Seemless look
-(use-package! org-appear
+(use-package org-appear
   :hook
   (org-mode . org-appear-mode)
   :config
