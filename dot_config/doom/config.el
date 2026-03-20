@@ -144,14 +144,15 @@
   (setq doom-themes-treemacs-theme "doom-colors"))
 
 ;; Better font for CJK
-(use-package unicode-fonts
-  :defer t
-  :config
+(with-eval-after-load `unicode-fonts
   ;; Common math symbols
   (dolist (unicode-block '("Greek and Coptic"))
     (push "Sarasa Mono CL" (cadr (assoc unicode-block unicode-fonts-block-font-mapping))))
   ;; CJK characters
-  (dolist (unicode-block '("CJK Unified Ideographs" "CJK Symbols and Punctuation" "CJK Radicals Supplement" "CJK Compatibility Ideographs"))
+  (dolist (unicode-block '("CJK Unified Ideographs"
+                           "CJK Symbols and Punctuation"
+                           "CJK Radicals Supplement"
+                           "CJK Compatibility Ideographs"))
     (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
 
 ;;
@@ -163,7 +164,7 @@
 ;; PlantUML
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
-(after! org
+(with-eval-after-load `org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 ;; Restore evil-escape
