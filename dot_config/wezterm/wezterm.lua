@@ -100,13 +100,17 @@ else
   })
 end
 
+-- 1Password SSH agent can then take over and listen on the system-wide pipe at
+-- \\.\pipe\openssh-ssh-agent
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+  config.default_ssh_auth_sock = "\\\\.\\pipe\\openssh-ssh-agent"
+end
+
+-- Enable kitty keyboard for better compatibility with Pi Coding Agent
+config.enable_kitty_keyboard = true
+
 -- Key bindings
 config.keys = {
-  {
-    key = 'Enter',
-    mods = 'SHIFT',
-    action = wezterm.action.SendString '\n',
-  },
   {
     key = '0',
     mods = 'ALT',
