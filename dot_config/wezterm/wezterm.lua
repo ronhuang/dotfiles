@@ -126,5 +126,8 @@ for i = 1, 9 do
   })
 end
 
+-- Increase scrollback size
+config.scrollback_lines = 99999
+
 -- and finally, return the configuration to wezterm
 return config
