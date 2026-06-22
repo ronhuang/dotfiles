@@ -10,7 +10,20 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
--- Include homebrew to PATH
+-- Helper functions to detect OS (platform-agnostic, works on both x64 and ARM64)
+local function is_windows()
+  return wezterm.target_triple:find("windows") ~= nil
+end
+
+local function is_macos()
+  return wezterm.target_triple:find("darwin") ~= nil
+end
+
+local function is_linux()
+  return wezterm.target_triple:find("linux") ~= nil
+end
+
+-- Include homebrew to PATH on Apple Silicon
 if wezterm.target_triple == "aarch64-apple-darwin" then
   config.set_environment_variables = {
     PATH = '/opt/homebrew/bin:' .. os.getenv('PATH')
@@ -24,7 +37,7 @@ config.color_scheme = 'Modus-Vivendi'
 config.font = wezterm.font('FantasqueSansM Nerd Font Mono', { weight = 'DemiBold' })
 
 config.font_size = 13.0
-if wezterm.target_triple == "aarch64-apple-darwin" then
+if is_macos() then
   config.font_size = 17.0
 end
 
@@ -40,7 +53,7 @@ config.launch_menu = {
   },
 }
 
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+if is_windows() then
   table.insert(config.launch_menu, {
     label = 'PowerShell',
     args = { 'pwsh.exe' },
@@ -127,7 +140,7 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
       end
     end
   end
-else
+elseif is_macos() or is_linux() then
   table.insert(config.launch_menu, {
     label = 'zsh',
     args = { 'zsh', '--login' }
@@ -136,7 +149,7 @@ end
 
 -- 1Password SSH agent can then take over and listen on the system-wide pipe at
 -- \\.\pipe\openssh-ssh-agent
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+if is_windows() then
   config.default_ssh_auth_sock = "\\\\.\\pipe\\openssh-ssh-agent"
 end
 
