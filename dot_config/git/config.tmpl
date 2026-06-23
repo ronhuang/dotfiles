@@ -77,14 +77,21 @@
   format = ssh
 [commit]
   gpgsign = true
-{{- if eq .chezmoi.os "windows" }}
-[gpg "ssh"]
-  program = {{ if ("C:/Program Files/1Password/app/8" | lstat) }}"C:/Program Files/1Password/app/8/op-ssh-sign.exe"{{ else }}"{{ .chezmoi.homeDir }}/AppData/Local/1Password/app/8/op-ssh-sign.exe"{{ end }}
-{{- else if eq .chezmoi.os "linux" }}
-[gpg "ssh"]
-  program = "/opt/1Password/op-ssh-sign"
+{{- $sshSignCandidates := list
+    (printf "%s/AppData/Local/Microsoft/WindowsApps/op-ssh-sign.exe" .chezmoi.homeDir)
+    "C:/Program Files/1Password/app/8/op-ssh-sign.exe"
+    (printf "%s/AppData/Local/1Password/app/8/op-ssh-sign.exe" .chezmoi.homeDir)
+    "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+    "/opt/1Password/op-ssh-sign"
+-}}
+{{- $sign := "" -}}
+{{- range $sshSignCandidates -}}
+  {{- if and (not $sign) (. | lstat) -}}
+    {{- $sign = . -}}
+  {{- end -}}
 {{- end }}
 [gpg "ssh"]
+  program = "{{ $sign }}"
   allowedSignersFile = "{{ .chezmoi.homeDir }}/.config/git/allowed_signers"
 
 {{- if eq .chezmoi.os "windows" }}

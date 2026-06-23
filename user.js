@@ -221,6 +221,8 @@ user_pref("security.enterprise_roots.enabled", true);
 // PREF: enable GPU-accelerated Canvas2D [WINDOWS]
 user_pref("gfx.canvas.accelerated", true);
 
+// Reduce zen browser border
+user_pref("zen.theme.content-element-separation", 2)
 
 /****************************************************************************
  * END: BETTERFOX                                                           *
