@@ -1,0 +1,67 @@
+{{ if eq .chezmoi.os "windows" }}
+# user.js hash: {{ include "user.js" | sha256sum }}
+# This script copies user.js into auto-detected browser profile directories.
+# It only runs when user.js itself has changed (hash above is embedded).
+#
+# Supported browsers: Zen, Firefox, LibreWolf, Waterfox
+
+$ErrorActionPreference = "Stop"
+$source = {{ joinPath .chezmoi.sourceDir "user.js" | quote }}
+
+# Browser definitions: name + relative config dir under APPDATA
+$browsers = @(
+    @{ Name = "Zen";       ConfigDir = "$env:APPDATA\zen" },
+    @{ Name = "Firefox";   ConfigDir = "$env:APPDATA\Mozilla\Firefox" },
+    @{ Name = "LibreWolf"; ConfigDir = "$env:APPDATA\librewolf" },
+    @{ Name = "Waterfox";  ConfigDir = "$env:APPDATA\Waterfox" }
+)
+
+foreach ($browser in $browsers) {
+    $configDir = $browser.ConfigDir
+    if (-not (Test-Path $configDir)) { continue }
+
+    # Try installs.ini first (gives the installation-default profile)
+    $installsIni = Join-Path $configDir "installs.ini"
+    $profilesIni = Join-Path $configDir "profiles.ini"
+    $defaultProfilePath = $null
+
+    if (Test-Path $installsIni) {
+        $content = Get-Content $installsIni -Raw
+        if ($content -match 'Default=(.+)') {
+            $defaultProfilePath = $matches[1].Trim()
+        }
+    }
+
+    # Fall back to profiles.ini: find the profile with Default=1
+    if (-not $defaultProfilePath -and (Test-Path $profilesIni)) {
+        $content = Get-Content $profilesIni -Raw
+        if ($content -match '(?s)\[Profile\d+\][^[]*?Default=1[^[]*?Path=(.+?)(?:\r?\n|$)') {
+            $defaultProfilePath = $matches[1].Trim()
+        }
+    }
+
+    # Last resort: take the first profile listed
+    if (-not $defaultProfilePath -and (Test-Path $profilesIni)) {
+        $content = Get-Content $profilesIni -Raw
+        if ($content -match '\[Profile\d+\][^[]*?Path=(.+?)(?:\r?\n|$)') {
+            $defaultProfilePath = $matches[1].Trim()
+        }
+    }
+
+    if (-not $defaultProfilePath) {
+        Write-Host "Skipping $($browser.Name): no profile found"
+        continue
+    }
+
+    # profiles.ini paths use forward slashes and are relative to the config dir
+    $profileDir = Join-Path $configDir ($defaultProfilePath -replace '/', '\')
+    if (-not (Test-Path $profileDir)) {
+        Write-Host "Skipping $($browser.Name): profile dir not found: $profileDir"
+        continue
+    }
+
+    $dest = Join-Path $profileDir "user.js"
+    Copy-Item -Path $source -Destination $dest -Force
+    Write-Host "[$($browser.Name)] Copied user.js -> $dest"
+}
+{{ end }}

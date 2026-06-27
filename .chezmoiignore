@@ -1,5 +1,4 @@
 README.md
-user.js
 
 # Ignore Linux/macOS specific files on Windows
 {{ if eq .chezmoi.os "windows" }}
@@ -12,3 +11,6 @@ user.js
 {{ if ne .chezmoi.os "windows" }}
 AppData
 {{ end }}
+
+# user.js is deployed by run_onchange_ script, not managed directly
+user.js

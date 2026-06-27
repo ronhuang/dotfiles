@@ -1,0 +1,75 @@
+{{ if ne .chezmoi.os "windows" }}
+#!/bin/bash
+# user.js hash: {{ include "user.js" | sha256sum }}
+# This script copies user.js into auto-detected browser profile directories.
+# It only runs when user.js itself has changed (hash above is embedded).
+#
+# Supported browsers: Zen, Firefox, LibreWolf, Waterfox
+
+set -euo pipefail
+
+SOURCE="{{ joinPath .chezmoi.sourceDir "user.js" }}"
+
+# Browser definitions: name + config dir
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    BROWSERS=(
+        "Zen|$HOME/Library/Application Support/zen"
+        "Firefox|$HOME/Library/Application Support/Firefox"
+        "LibreWolf|$HOME/Library/Application Support/librewolf"
+        "Waterfox|$HOME/Library/Application Support/Waterfox"
+    )
+else
+    BROWSERS=(
+        "Zen|$HOME/.zen"
+        "Firefox|$HOME/.mozilla/firefox"
+        "LibreWolf|$HOME/.librewolf"
+        "Waterfox|$HOME/.waterfox"
+    )
+fi
+
+for entry in "${BROWSERS[@]}"; do
+    name="${entry%%|*}"
+    config_dir="${entry##*|}"
+
+    if [[ ! -d "$config_dir" ]]; then
+        continue
+    fi
+
+    default_profile=""
+
+    # Try installs.ini first
+    if [[ -f "$config_dir/installs.ini" ]]; then
+        default_profile=$(grep -m1 '^Default=' "$config_dir/installs.ini" | cut -d= -f2-)
+    fi
+
+    # Fall back to profiles.ini: find profile with Default=1
+    if [[ -z "$default_profile" && -f "$config_dir/profiles.ini" ]]; then
+        default_profile=$(awk '
+            /^\[Profile/ { in_profile=1; path=""; def=0; next }
+            in_profile && /^Path=/ { path=$0; sub(/^Path=/, "", path) }
+            in_profile && /^Default=1/ { def=1 }
+            /^\[/ && in_profile { if (def && path) print path; in_profile=0 }
+            END { if (in_profile && def && path) print path }
+        ' "$config_dir/profiles.ini")
+    fi
+
+    # Last resort: first profile
+    if [[ -z "$default_profile" && -f "$config_dir/profiles.ini" ]]; then
+        default_profile=$(grep -m1 '^Path=' "$config_dir/profiles.ini" | cut -d= -f2-)
+    fi
+
+    if [[ -z "$default_profile" ]]; then
+        echo "Skipping $name: no profile found"
+        continue
+    fi
+
+    profile_dir="$config_dir/$default_profile"
+    if [[ ! -d "$profile_dir" ]]; then
+        echo "Skipping $name: profile dir not found: $profile_dir"
+        continue
+    fi
+
+    cp -f "$SOURCE" "$profile_dir/user.js"
+    echo "[$name] Copied user.js -> $profile_dir/user.js"
+done
+{{ end }}
