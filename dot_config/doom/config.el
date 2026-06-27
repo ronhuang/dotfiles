@@ -2,7 +2,7 @@
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
-
+(load! "lib/fonts")
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -30,7 +30,7 @@
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 (setq doom-font (font-spec :family "FantasqueSansM Nerd Font Mono" :size 16.0)
       doom-variable-pitch-font (font-spec :family "Atkinson Hyperlegible Next" :size 16.0)
-      doom-symbol-font (font-spec :family "Sarasa Mono TC" :size 16.0))
+      doom-symbol-font (font-spec :family (my/sarasa-family "TC") :size 16.0))
 
 (if (featurep :system 'windows)
     (set-selection-coding-system 'utf-16le-dos)
@@ -147,13 +147,13 @@
 (with-eval-after-load `unicode-fonts
   ;; Common math symbols
   (dolist (unicode-block '("Greek and Coptic"))
-    (push "Sarasa Mono CL" (cadr (assoc unicode-block unicode-fonts-block-font-mapping))))
+    (push (my/sarasa-family "CL") (cadr (assoc unicode-block unicode-fonts-block-font-mapping))))
   ;; CJK characters
   (dolist (unicode-block '("CJK Unified Ideographs"
                            "CJK Symbols and Punctuation"
                            "CJK Radicals Supplement"
                            "CJK Compatibility Ideographs"))
-    (push "Sarasa Mono TC" (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
+    (push (my/sarasa-family "TC") (cadr (assoc unicode-block unicode-fonts-block-font-mapping)))))
 
 ;;
 (use-package valign
