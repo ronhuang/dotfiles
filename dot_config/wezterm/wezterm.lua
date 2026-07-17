@@ -88,44 +88,38 @@ if is_windows() then
     
     -- Detect native architecture
     local arch = 'x64'
-    local arch_handle = io.popen('cmd.exe /c echo %PROCESSOR_ARCHITECTURE%')
-    if arch_handle then
-      local proc_arch = arch_handle:read('*a'):gsub('%s+', '')
-      arch_handle:close()
-      if proc_arch == 'ARM64' then
-        arch = 'arm64'
-      end
+    local proc_arch = os.getenv('PROCESSOR_ARCHITECTURE')
+    if proc_arch == 'ARM64' then
+      arch = 'arm64'
     end
-    
+
     -- Run vswhere to find all VS installations (including Build Tools)
-    local vswhere_cmd = 'cmd.exe /c "\"' .. vswhere_path .. '\" -all -products * -format json"'
-    local vs_handle = io.popen(vswhere_cmd)
-    if vs_handle then
-      local json_output = vs_handle:read('*a')
-      vs_handle:close()
-      
+    local success, stdout, stderr = wezterm.run_child_process({
+      vswhere_path, '-all', '-products', '*', '-format', 'json',
+    })
+    if success then
       -- Parse each Visual Studio installation
       -- Look for objects in the JSON array
-      for vs_object in json_output:gmatch('{.-}') do
+      for vs_object in stdout:gmatch('{.-}') do
         local install_path = vs_object:match('"installationPath"%s*:%s*"([^"]+)"')
         local display_name = vs_object:match('"displayName"%s*:%s*"([^"]+)"')
-        
+
         if install_path and display_name then
           -- Convert double backslashes from JSON to single backslashes
           install_path = install_path:gsub('\\\\', '\\')
-          
+
           -- Only support VS 2019 and later (has DevShell.dll)
           local devshell_path = install_path .. '\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll'
           local devshell_file = io.open(devshell_path, 'r')
-          
+
           if devshell_file then
             io.close(devshell_file)
-            
+
             local vs_template = '&{' ..
               'Import-Module "%s\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; ' ..
               'Enter-VsDevShell -VsInstallPath "%s" -SkipAutomaticLocation -DevCmdArguments "-arch=%s -host_arch=%s"' ..
               '}'
-            
+
             table.insert(config.launch_menu, {
               label = string.format('Developer PWSH for %s', display_name),
               args = {
