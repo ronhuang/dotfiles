@@ -28,9 +28,9 @@ $FZF_CTRL_R_OPTS = '--no-sort --exact'
 xontrib load fzf-completions
 
 # aliases
-aliases['ls'] = ['eza', '--icons']
-aliases['l'] = ['eza', '--icons', '-l']
-aliases['lt'] = ['eza', '--icons', '--tree']
+aliases['ls'] = ['eza', '--icons', 'auto']
+aliases['l'] = ['eza', '--icons', 'auto', '-l']
+aliases['lt'] = ['eza', '--icons', 'auto', '--tree']
 aliases['e'] = ['emacsclient', '-c', '-n', '-a', '']
 aliases['ec'] = ['emacsclient', '-t', '-a', '']
 if platform.ON_WINDOWS:
