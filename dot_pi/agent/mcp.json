@@ -1,8 +1,5 @@
 {
   "mcpServers": {
-    "context-mode": {
-      "command": "context-mode"
-    },
     "firefox-devtools": {
       "command": "npx",
       "args": ["-y", "@mozilla/firefox-devtools-mcp@latest"]
