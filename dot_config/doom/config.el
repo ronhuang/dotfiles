@@ -221,3 +221,6 @@
   :defer t
   :config
   (setq pi-coding-agent-input-markdown-highlighting t))
+
+;; Configure ghostel
+(setq ghostel-shell '("xonsh" "--login"))
