@@ -1,8 +1,12 @@
 {
   "mcpServers": {
-    "firefox-devtools": {
+    "playwright": {
       "command": "npx",
-      "args": ["-y", "@mozilla/firefox-devtools-mcp@latest"]
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser=msedge"
+      ]
     }
   }
 }
