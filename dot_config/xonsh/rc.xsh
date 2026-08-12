@@ -1,5 +1,15 @@
 from xonsh import platform
 
+# make ctrl-k and ctrl-y behavior correctly
+$XONSH_COPY_ON_DELETE = True
+
+# global pager: git, bat, delta/jj all honor PAGER (delta pages through it)
+# delta re-splits $PAGER, which breaks on spaced paths, so give it DELTA_PAGER (used raw)
+git_less = p'C:/Program Files/Git/usr/bin/less.exe'
+if git_less.exists():
+    $PAGER = f'"{git_less}" -R -F -X'
+    $DELTA_PAGER = f'"{git_less}" -R -F -X'
+
 # Sqlite history backend
 $XONSH_HISTORY_BACKEND = 'sqlite'
 
