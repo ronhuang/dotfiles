@@ -1,0 +1,7 @@
+{{- $less := "C:\\Program Files\\Git\\usr\\bin\\less.exe" -}}
+{{- if and (eq .chezmoi.os "windows") (stat $less) }}
+# chezmoi cannot shell-split $PAGER on Windows (it execs the whole value as a
+# single binary path), so give it the bare less path + args explicitly.
+pager = '{{ $less }}'
+pagerArgs = ['-R', '-F', '-X']
+{{- end }}

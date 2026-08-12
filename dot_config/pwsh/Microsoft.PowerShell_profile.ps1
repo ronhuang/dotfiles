@@ -100,6 +100,15 @@ Invoke-Expression (&starship init powershell)
 # better cd
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
+# global pager: git, bat, delta/jj all honor PAGER (delta uses DELTA_PAGER raw,
+# since it re-splits $PAGER and spaced paths break it)
+$gitLess = Join-Path $env:ProgramFiles 'Git\usr\bin\less.exe'
+if (Test-Path $gitLess)
+{
+    $env:PAGER = "`"$gitLess`" -R -F -X"
+    $env:DELTA_PAGER = "`"$gitLess`" -R -F -X"
+}
+
 # ripgrep config
 $env:RIPGREP_CONFIG_PATH="$env:USERPROFILE\.config\ripgrep\rc"
 
