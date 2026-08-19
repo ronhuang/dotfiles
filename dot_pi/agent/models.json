@@ -5,44 +5,59 @@
       "api": "openai-completions",
       "apiKey": "$LEMONADE_API_KEY",
       "compat": {
-        "supportsUsageInStreaming": false
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
       },
       "models": [
         {
+          "id": "Muse-Glimmer-30B-GGUF",
+          "name": "Muse Glimmer 30B",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 131072,
+          "maxTokens": 32768
+        },
+        {
           "id": "Qwen3-Coder-30B-A3B-Instruct-GGUF",
-          "name": "Qwen3-Coder-30B-A3B-Instruct-GGUF",
+          "name": "Qwen3 Coder 30B-A3B Instruct",
           "reasoning": false,
           "input": ["text"],
-          "contextWindow": 262144,
-          "maxTokens": 32768,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+          "contextWindow": 131072,
+          "maxTokens": 32768
         },
         {
           "id": "Qwen3.6-35B-A3B-MTP-GGUF",
           "name": "Qwen3.6 35B-A3B (MTP)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 262144,
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 131072,
           "maxTokens": 32768,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
           "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false,
             "thinkingFormat": "qwen-chat-template"
           }
         },
         {
           "id": "Qwen3.6-27B-MTP-GGUF",
           "name": "Qwen3.6 27B (MTP)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 262144,
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 131072,
           "maxTokens": 32768,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
           "compat": {
-            "supportsDeveloperRole": false,
-            "supportsReasoningEffort": false,
             "thinkingFormat": "qwen-chat-template"
+          }
+        },
+        {
+          "id": "Qwen3.8-27B-GGUF",
+          "name": "Qwen3.8 27B",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 131072,
+          "maxTokens": 32768,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template",
+            "supportsDeveloperRole": true,
+            "supportsReasoningEffort": true
           }
         }
       ]
