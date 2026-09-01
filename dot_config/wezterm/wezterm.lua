@@ -69,14 +69,20 @@ if is_windows() then
     args = { 'C:\\Program Files\\Git\\bin\\bash.exe', '--login' },
   })
 
-  -- Only add MSYS2 MINGW64 if it's installed
+  -- Only add MSYS2 entries if MSYS2 is installed.
   local msys2_shell = 'C:\\msys64\\msys2_shell.cmd'
   local f = io.open(msys2_shell, 'r')
   if f ~= nil then
     io.close(f)
+
     table.insert(config.launch_menu, {
       label = 'MSYS2 MINGW64',
       args = { msys2_shell, '-defterm', '-here', '-no-start', '-mingw64' },
+    })
+
+    table.insert(config.launch_menu, {
+      label = 'MSYS2 UCRT64',
+      args = { msys2_shell, '-defterm', '-here', '-no-start', '-ucrt64' },
     })
   end
 
