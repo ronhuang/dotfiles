@@ -1,12 +1,14 @@
 {{ if eq .chezmoi.os "windows" }}
-# user.js hash: {{ include "user.js" | sha256sum }}
-# This script copies user.js into auto-detected browser profile directories.
-# It only runs when user.js itself has changed (hash above is embedded).
+# user.js hash: {{ include "browser/user.js" | sha256sum }}
+# userChrome.css hash: {{ include "browser/userChrome.css" | sha256sum }}
+# This script copies browser settings into auto-detected browser profile directories.
+# It only runs when browser/user.js or browser/userChrome.css has changed (hashes above are embedded).
 #
 # Supported browsers: Zen, Firefox, LibreWolf, Waterfox
 
 $ErrorActionPreference = "Stop"
-$source = {{ joinPath .chezmoi.sourceDir "user.js" | quote }}
+$userJsSource = {{ joinPath .chezmoi.sourceDir "browser/user.js" | quote }}
+$userChromeSource = {{ joinPath .chezmoi.sourceDir "browser/userChrome.css" | quote }}
 
 # Browser definitions: name + relative config dir under APPDATA
 $browsers = @(
@@ -60,8 +62,14 @@ foreach ($browser in $browsers) {
         continue
     }
 
-    $dest = Join-Path $profileDir "user.js"
-    Copy-Item -Path $source -Destination $dest -Force
-    Write-Host "[$($browser.Name)] Copied user.js -> $dest"
+    $userJsDest = Join-Path $profileDir "user.js"
+    Copy-Item -Path $userJsSource -Destination $userJsDest -Force
+    Write-Host "[$($browser.Name)] Copied user.js -> $userJsDest"
+
+    $chromeDir = Join-Path $profileDir "chrome"
+    New-Item -ItemType Directory -Path $chromeDir -Force | Out-Null
+    $userChromeDest = Join-Path $chromeDir "userChrome.css"
+    Copy-Item -Path $userChromeSource -Destination $userChromeDest -Force
+    Write-Host "[$($browser.Name)] Copied userChrome.css -> $userChromeDest"
 }
 {{ end }}

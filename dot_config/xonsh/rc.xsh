@@ -85,3 +85,7 @@ if platform.ON_WSL:
     for path in $PATH.paths:
         if path.startswith('/mnt/c/'):
             $PATH.remove(path)
+
+# allow xonsh to find .xsh files on PATH
+if platform.ON_WINDOWS:
+    $PATHEXT.append(".XSH")

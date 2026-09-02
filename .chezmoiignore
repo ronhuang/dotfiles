@@ -12,5 +12,5 @@ README.md
 AppData
 {{ end }}
 
-# user.js is deployed by run_onchange_ script, not managed directly
-user.js
+# Browser files are deployed by run_onchange_ scripts, not managed directly
+browser/

@@ -1,14 +1,16 @@
 {{ if ne .chezmoi.os "windows" }}
 #!/bin/bash
-# user.js hash: {{ include "user.js" | sha256sum }}
-# This script copies user.js into auto-detected browser profile directories.
-# It only runs when user.js itself has changed (hash above is embedded).
+# user.js hash: {{ include "browser/user.js" | sha256sum }}
+# userChrome.css hash: {{ include "browser/userChrome.css" | sha256sum }}
+# This script copies browser settings into auto-detected browser profile directories.
+# It only runs when browser/user.js or browser/userChrome.css has changed (hashes above are embedded).
 #
 # Supported browsers: Zen, Firefox, LibreWolf, Waterfox
 
 set -euo pipefail
 
-SOURCE="{{ joinPath .chezmoi.sourceDir "user.js" }}"
+USER_JS_SOURCE="{{ joinPath .chezmoi.sourceDir "browser/user.js" }}"
+USER_CHROME_SOURCE="{{ joinPath .chezmoi.sourceDir "browser/userChrome.css" }}"
 
 # Browser definitions: name + config dir
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -69,7 +71,12 @@ for entry in "${BROWSERS[@]}"; do
         continue
     fi
 
-    cp -f "$SOURCE" "$profile_dir/user.js"
+    cp -f "$USER_JS_SOURCE" "$profile_dir/user.js"
     echo "[$name] Copied user.js -> $profile_dir/user.js"
+
+    chrome_dir="$profile_dir/chrome"
+    mkdir -p "$chrome_dir"
+    cp -f "$USER_CHROME_SOURCE" "$chrome_dir/userChrome.css"
+    echo "[$name] Copied userChrome.css -> $chrome_dir/userChrome.css"
 done
 {{ end }}
