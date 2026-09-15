@@ -32,7 +32,8 @@ end
 
 -- This is where you actually apply your config choices
 
-config.color_scheme = 'Modus-Vivendi'
+local evergarden = wezterm.plugin.require 'https://github.com/ronhuang/evergarden-wezterm'
+evergarden.apply_to_config(config, { flavor = 'winter', accent = 'yellow' })
 
 config.font = wezterm.font('FantasqueSansM Nerd Font Mono', { weight = 'DemiBold' })
 
