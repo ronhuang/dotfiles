@@ -41,7 +41,7 @@ aliases['lt'] = ['eza', '--icons', 'auto', '--tree']
 aliases['e'] = ['emacsclient', '-c', '-n', '-a', '']
 aliases['ec'] = ['emacsclient', '-t', '-a', '']
 if platform.ON_WINDOWS:
-    aliases['doom'] = ['pwsh', '-File', '~/.config/emacs/bin/doom.ps1']
+    aliases['doom'] = ['pwsh', '-File', p'~/.config/emacs/bin/doom.ps1']
 
 # better prompt
 $VIRTUAL_ENV_DISABLE_PROMPT = True
@@ -51,17 +51,17 @@ if platform.ON_WINDOWS and (p"" / $ProgramFiles / "Zscaler").exists():
     # use simpler prompt
     $PROMPT = '{CYAN}{short_cwd} {RED}{last_return_code_if_nonzero:[{BOLD_INTENSE_RED}{}{RED}] }{RESET}\n{BOLD_GREEN}{prompt_end}{RESET} '
 else:
-    $STARSHIP_CONFIG = '~/.config/starship/xonsh.toml'
+    $STARSHIP_CONFIG = p'~/.config/starship/xonsh.toml'
     xontrib load prompt_starship
 
 # better cd
 execx($(zoxide init xonsh), 'exec', __xonsh__.ctx, filename='zoxide')
 
 # ripgrep config
-$RIPGREP_CONFIG_PATH = '~/.config/ripgrep/rc'
+$RIPGREP_CONFIG_PATH = p'~/.config/ripgrep/rc'
 
 # eza config
-$EZA_CONFIG_DIR = '~/.config/eza'
+$EZA_CONFIG_DIR = p'~/.config/eza'
 
 # use 1Password SSH agent under WSL environment
 if platform.ON_WSL:
