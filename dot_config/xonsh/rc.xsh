@@ -3,6 +3,14 @@ from xonsh import platform
 # make ctrl-k and ctrl-y behavior correctly
 $XONSH_COPY_ON_DELETE = True
 
+# Linux-only: headless sessions (e.g. over SSH) have no display server, so pyperclip
+# finds no clipboard backend (no $DISPLAY / $WAYLAND_DISPLAY) and raises
+# "could not find a copy/paste mechanism" on every in-shell copy. Fall back to the
+# in-memory clipboard there; keep the system clipboard when a display exists
+# (e.g. WSLg). Windows/macOS use native clipboard APIs and never hit this.
+if platform.ON_LINUX and "DISPLAY" not in @.env and "WAYLAND_DISPLAY" not in @.env:
+    $XONSH_USE_SYSTEM_CLIPBOARD = False
+
 # global pager: git, bat, delta/jj all honor PAGER (delta pages through it)
 # delta re-splits $PAGER, which breaks on spaced paths, so give it DELTA_PAGER (used raw)
 git_less = p'C:/Program Files/Git/usr/bin/less.exe'
@@ -18,6 +26,11 @@ sock = p'~/.1password/agent.sock'
 if sock.exists():
     $SSH_AUTH_SOCK = str(sock)
 
+# Lemonade API key
+lemonade_key = p'~/.config/lemonade/LEMONADE_API_KEY'
+if lemonade_key.exists():
+    $LEMONADE_API_KEY = lemonade_key.read_text().strip()
+
 # add Doom Emacs to PATH
 doom = p'~/.config/emacs/bin'
 if doom.exists():
@@ -25,6 +38,11 @@ if doom.exists():
 
 # add local to PATH
 local = p'~/.local/bin'
+if local.exists():
+    $PATH.prepend(local)
+
+# add rustup to PATH
+local = p'/home/linuxbrew/.linuxbrew/opt/rustup/bin'
 if local.exists():
     $PATH.prepend(local)
 
