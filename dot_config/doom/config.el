@@ -216,11 +216,5 @@
   (setq org-hide-emphasis-markers t
         org-appear-autolinks 'just-brackets))
 
-;; Configure pi-coding-agent
-(use-package pi-coding-agent
-  :defer t
-  :config
-  (setq pi-coding-agent-input-markdown-highlighting t))
-
 ;; Configure ghostel
 (setq ghostel-shell '("xonsh" "--login"))
