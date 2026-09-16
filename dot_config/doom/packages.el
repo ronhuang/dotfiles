@@ -18,7 +18,6 @@
 (package! valign)
 (package! ascii-table)
 (package! xonsh-mode)
-(package! pi-coding-agent)
 (package! just-mode)
 
 ;; To install a package directly from a remote git repo, you must specify a
