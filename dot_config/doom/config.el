@@ -39,7 +39,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'modus-vivendi)
+(setq doom-theme 'evergarden-winter-yellow)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -53,20 +53,23 @@
 ;; PlantUML
 (setq plantuml-exec-mode `jar)
 
-;; Configure the Modus Themes' appearance
-(setq modus-themes-mode-line '(moody borderless)
-      modus-themes-bold-constructs t
-      modus-themes-italic-constructs t
-      modus-themes-fringes 'subtle
-      modus-themes-hl-line '(intense)
-      modus-themes-paren-match '(intense)
-      modus-themes-syntax '(alt-syntax)
-      modus-themes-org-blocks 'gray-background
-      modus-themes-headings
-      '((1 . (overline 1.4))
-        (2 . (overline 1.3))
-        (3 . (overline 1.2))
-        (t . (monochrome 1.1))))
+;; Configure the Evergarden themes' appearance
+(setq evergarden-style-keyword '(bold)
+      evergarden-style-comment  '(italic)
+      evergarden-statusline-active   '(:fg text :bg base)
+      evergarden-statusline-inactive '(:fg overlay0 :bg base)
+      evergarden-overrides
+      '((hl-line :bg surface1)
+        (show-paren-match :bg surface2 :style (bold))
+        (fringe :bg mantle)
+        (org-block :bg mantle)
+        (org-block-begin-line :bg mantle :foreground overlay2)
+        (org-block-end-line :bg mantle :foreground overlay2))
+      evergarden-headings
+      '((1 :overline t :height 1.4)
+        (2 :overline t :height 1.3)
+        (3 :overline t :height 1.2)
+        (t :height 1.1)))
 
 ;; Misc
 (setq confirm-kill-emacs nil)
