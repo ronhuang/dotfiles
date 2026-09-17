@@ -1,4 +1,4 @@
-{{ if ne .chezmoi.os "windows" }}
+{{ if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 # user.js hash: {{ include "browser/user.js" | sha256sum }}
 # userChrome.css hash: {{ include "browser/userChrome.css" | sha256sum }}
