@@ -1,5 +1,9 @@
 ;;; $DOOMDIR/packages.el -*- lexical-binding: t; no-byte-compile: t -*-
 
+;; typst-ts-mode's generated autoloads use `define-compilation-mode' before
+;; loading `compile.el'. Emacs 31 no longer preloads that library.
+(require 'compile)
+
 ;; To install a package:
 ;;
 ;;   1. Declare them here in a `package!' statement,
