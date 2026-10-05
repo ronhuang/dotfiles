@@ -1,6 +1,7 @@
 {
   "app.model.cycleForward": [],
   "app.model.cycleBackward": [],
+  "tui.altScreen.search": [],
   "tui.editor.cursorUp": ["up", "ctrl+p"],
   "tui.editor.cursorDown": ["down", "ctrl+n"],
   "tui.editor.cursorLeft": ["left", "ctrl+b"],
