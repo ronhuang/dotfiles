@@ -19,8 +19,9 @@ source directory is used, so the command can be run from anywhere. Pass
 ``--repo`` to select a specific worktree.
 
 By default commonize leaves ``refs/backup/commonize/<session>/*`` safety refs;
-pass ``--cleanup-backup-refs`` to delete them (and any stale ones) once the
-promotion succeeds.
+pass ``--cleanup-backup-refs`` to delete them (and any stale ones) locally
+without any network access, or give it a commit message to promote first and
+clean up afterwards.
 
 Unstaged and untracked files are never accepted. The command never stashes,
 force-pushes, or automatically resets after an operation fails.
@@ -673,9 +674,9 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "delete all refs under refs/backup/commonize/ (this run's safety "
-            "refs and stale ones) once the promotion succeeds; with nothing "
-            "else to promote, just delete them and exit. Recovery stays "
-            "available via the reflog."
+            "refs and stale ones) and exit, without any network access; give "
+            "a commit message to instead promote first and clean up "
+            "afterwards. Recovery stays available via the reflog."
         ),
     )
     parser.add_argument(
@@ -694,6 +695,18 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     git = Git(resolve_repository(args.repo))
+
+    if args.cleanup_backup_refs and not args.message:
+        # Pure local cleanup: never touches the network, remotes, or branch.
+        if args.dry_run:
+            print(
+                "Dry run: would delete backup refs under "
+                "refs/backup/commonize/."
+            )
+            return 0
+        delete_backup_refs(git)
+        print("Backup ref cleanup complete.")
+        return 0
 
     require_branch(git)
     remotes = resolve_remotes(
@@ -739,16 +752,6 @@ def main() -> int:
         )
 
     commits = local_commits(git, target_head)
-    if args.cleanup_backup_refs and not staged and not commits:
-        if args.dry_run:
-            print(
-                "Dry run: would delete backup refs under "
-                "refs/backup/commonize/."
-            )
-            return 0
-        delete_backup_refs(git)
-        print("Backup ref cleanup complete; nothing was promoted.")
-        return 0
     if not staged and not commits:
         raise CommonizeError(
             f"There are no staged changes and no local commits after "
