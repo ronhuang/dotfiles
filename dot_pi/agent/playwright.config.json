@@ -1,0 +1,15 @@
+{
+  "browser": {
+    "launchOptions": {
+      "channel": "msedge",
+      "args": ["--lang=en-US"]
+    },
+    "userDataDir": "playwright-edge-profile",
+    "contextOptions": {
+      "locale": "en-US",
+      "extraHTTPHeaders": {
+        "Accept-Language": "en-US,en;q=0.9"
+      }
+    }
+  }
+}
