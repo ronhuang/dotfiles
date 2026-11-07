@@ -4,12 +4,23 @@
 Usage:
     commonize.xsh "Commit message"
     commonize.xsh --dry-run
+    commonize.xsh --repo ~/code/dotfiles "Commit message"
+    commonize.xsh --cleanup-backup-refs
 
 The command expects the current branch to be ``main``. It detects the work
 and personal remotes from their URLs, commits explicitly staged changes,
 rebases local commits onto the personal remote's ``common`` branch, pushes that
 result to the shared common branch, then merges the promoted result back into
 the current downstream remote's ``main`` branch.
+
+The repository to promote is normally the git worktree containing the current
+directory when it looks like the personal repository; otherwise the chezmoi
+source directory is used, so the command can be run from anywhere. Pass
+``--repo`` to select a specific worktree.
+
+By default commonize leaves ``refs/backup/commonize/<session>/*`` safety refs;
+pass ``--cleanup-backup-refs`` to delete them (and any stale ones) once the
+promotion succeeds.
 
 Unstaged and untracked files are never accepted. The command never stashes,
 force-pushes, or automatically resets after an operation fails.
@@ -156,10 +167,14 @@ class Git:
         return self.ref("HEAD")
 
     def status(self) -> WorkspaceState:
-        output = self.output(
-            ["status", "--porcelain=v1", "--untracked-files=all"]
+        # Use the raw stdout: porcelain lines start with a status column that
+        # a whitespace-stripping helper would destroy (" M path" -> "M path").
+        result = self.run(
+            ["status", "--porcelain=v1", "--untracked-files=all"],
+            capture=True,
+            announce=False,
         )
-        entries = tuple(line for line in output.splitlines() if line)
+        entries = tuple(line for line in result.stdout.splitlines() if line)
         return WorkspaceState(entries)
 
     def is_ancestor(self, ancestor: str, descendant: str) -> bool:
@@ -171,6 +186,12 @@ class Git:
         )
         return result.returncode == 0
 
+    def git_path(self, name: str) -> Path:
+        path = Path(self.output(["rev-parse", "--git-path", name]))
+        if not path.is_absolute():
+            path = self.cwd / path
+        return path
+
     def operation_paths(self) -> tuple[Path, ...]:
         paths = []
         for marker in (
@@ -180,28 +201,84 @@ class Git:
             "rebase-apply",
             "rebase-merge",
         ):
-            path = Path(self.output(["rev-parse", "--git-path", marker]))
-            if not path.is_absolute():
-                path = self.cwd / path
+            path = self.git_path(marker)
             if path.exists():
                 paths.append(path)
         return tuple(paths)
 
 
-def discover_repository() -> Path:
+def worktree_toplevel(path: Path) -> Path | None:
     result = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"],
-        cwd=Path.cwd(),
+        ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
         text=True,
         capture_output=True,
         errors="replace",
     )
     if result.returncode != 0:
-        details = "\n".join(
-            part for part in (result.stdout, result.stderr) if part
-        ).strip()
-        raise CommonizeError(f"Not inside a Git worktree.\n{details}")
+        return None
     return Path(result.stdout.strip()).resolve()
+
+
+def looks_like_personal_repo(git: Git) -> bool:
+    try:
+        urls = remote_urls(git)
+    except CommonizeError:
+        return False
+    if any(
+        remote_url_matches(url, PERSONAL_HOST, PERSONAL_REPOSITORY)
+        for url in urls.values()
+    ):
+        return True
+    return any(
+        ref_exists(git, f"refs/remotes/{name}/{COMMON_BRANCH}")
+        for name in urls
+    )
+
+
+def chezmoi_source() -> Path | None:
+    try:
+        result = subprocess.run(
+            ["chezmoi", "source-path"],
+            cwd=Path.cwd(),
+            text=True,
+            capture_output=True,
+            errors="replace",
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    path = result.stdout.strip()
+    return Path(path).expanduser().resolve() if path else None
+
+
+def resolve_repository(repo_override: str | None) -> Path:
+    if repo_override is not None:
+        path = worktree_toplevel(Path(repo_override).expanduser())
+        if path is None:
+            raise CommonizeError(
+                f"--repo '{repo_override}' is not inside a Git worktree."
+            )
+        return path
+
+    cwd_tree = worktree_toplevel(Path.cwd())
+    if cwd_tree is not None and looks_like_personal_repo(Git(cwd_tree)):
+        return cwd_tree
+
+    for candidate in (
+        chezmoi_source(),
+        Path.home() / ".local/share/chezmoi",
+    ):
+        if candidate is None:
+            continue
+        path = worktree_toplevel(candidate)
+        if path is not None:
+            return path
+
+    raise CommonizeError(
+        "Could not locate a repository to promote. Run from inside the "
+        "personal repository or pass --repo PATH."
+    )
 
 
 def ref_exists(git: Git, ref: str) -> bool:
@@ -435,6 +512,34 @@ def create_backup_ref(git: Git, session: str, name: str, commit: str) -> str:
     return ref
 
 
+def delete_backup_refs(git: Git) -> None:
+    """Delete every ref under refs/backup/commonize/ and tidy empty dirs."""
+    output = git.output(
+        ["for-each-ref", "--format=%(refname)", "refs/backup/commonize/"]
+    )
+    refs = [line for line in output.splitlines() if line]
+    if not refs:
+        print("No backup refs to delete.")
+        return
+    for ref in refs:
+        git.run(["update-ref", "-d", ref], announce=False)
+    # git prunes the empried session dirs itself, so sweep the commonize
+    # namespace root too; every rmdir is guarded for non-empty leftovers.
+    for path in (git.git_path("refs/backup/commonize"), git.git_path("refs/backup")):
+        if not path.is_dir():
+            continue
+        for child in sorted(path.iterdir(), reverse=True):
+            try:
+                child.rmdir()
+            except OSError:
+                pass
+        try:
+            path.rmdir()
+        except OSError:
+            pass
+    print(f"Deleted backup ref(s): {', '.join(refs)}")
+
+
 def local_commits(git: Git, base: str) -> list[str]:
     output = git.output(["rev-list", "--reverse", f"{base}..HEAD"])
     return [line for line in output.splitlines() if line]
@@ -463,6 +568,7 @@ def print_plan(
     commits: Sequence[str],
     staged: Sequence[str],
     dry_run: bool,
+    cleanup_backup_refs: bool,
 ) -> None:
     print(f"Repository: {git.cwd}")
     print(f"Target remote: {remotes.target_remote}")
@@ -490,6 +596,8 @@ def print_plan(
     print(f"  reset local main to {remotes.target_remote}/{BRANCH}")
     print("  create a non-fast-forward merge into main")
     print(f"  push main to {remotes.target_remote}")
+    if cleanup_backup_refs:
+        print("  delete backup refs under refs/backup/commonize/")
 
 
 def confirm() -> bool:
@@ -552,6 +660,25 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--repo",
+        metavar="PATH",
+        help=(
+            "git worktree to promote; defaults to the current directory's "
+            "worktree when it looks like the personal repository, otherwise "
+            "the chezmoi source directory"
+        ),
+    )
+    parser.add_argument(
+        "--cleanup-backup-refs",
+        action="store_true",
+        help=(
+            "delete all refs under refs/backup/commonize/ (this run's safety "
+            "refs and stale ones) once the promotion succeeds; with nothing "
+            "else to promote, just delete them and exit. Recovery stays "
+            "available via the reflog."
+        ),
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="show the plan without fetching, committing, rebasing, or pushing",
@@ -566,7 +693,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    git = Git(discover_repository())
+    git = Git(resolve_repository(args.repo))
 
     require_branch(git)
     remotes = resolve_remotes(
@@ -612,6 +739,16 @@ def main() -> int:
         )
 
     commits = local_commits(git, target_head)
+    if args.cleanup_backup_refs and not staged and not commits:
+        if args.dry_run:
+            print(
+                "Dry run: would delete backup refs under "
+                "refs/backup/commonize/."
+            )
+            return 0
+        delete_backup_refs(git)
+        print("Backup ref cleanup complete; nothing was promoted.")
+        return 0
     if not staged and not commits:
         raise CommonizeError(
             f"There are no staged changes and no local commits after "
@@ -626,6 +763,7 @@ def main() -> int:
         commits=commits,
         staged=staged,
         dry_run=args.dry_run,
+        cleanup_backup_refs=args.cleanup_backup_refs,
     )
 
     if args.dry_run:
@@ -759,10 +897,16 @@ def main() -> int:
     )
     require_clean(git, "after pushing main")
 
+    if args.cleanup_backup_refs:
+        delete_backup_refs(git)
+
     print("Promotion complete.")
     print(f"  common: {promoted_head[:12]}")
     print(f"  merge:  {git.head()[:12]}")
-    print(f"  safety refs: refs/backup/commonize/{session}/")
+    if args.cleanup_backup_refs:
+        print("  backup refs: deleted")
+    else:
+        print(f"  safety refs: refs/backup/commonize/{session}/")
     return 0
 
 

@@ -28,8 +28,8 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINnNq+JGOGQLDiFyMyqVxe7urgtQz2/E2VMY0
 backends.ssh.program = "{{ $sign }}"
 backends.ssh.allowed-signers = "{{ .chezmoi.homeDir }}/.config/git/allowed_signers"
 
-[git]
-sign-on-push = true
+[revsets]
+git-sign-on-push = "~signed() & mine()"
 
 [merge-tools.difft]
 diff-args = ["--color=always", "$left", "$right"]
