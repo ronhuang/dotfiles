@@ -5,8 +5,10 @@
       "args": [
         "-y",
         "@playwright/mcp@latest",
-        "--browser=msedge"
-      ]
+        "--config",
+        "playwright.config.json"
+      ],
+      "cwd": "~/.pi/agent"
     }
   }
 }
