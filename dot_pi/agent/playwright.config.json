@@ -1,5 +1,6 @@
 {
   "browser": {
+    "browserName": "chromium",
     "launchOptions": {
       "channel": "msedge",
       "args": ["--lang=en-US"]
