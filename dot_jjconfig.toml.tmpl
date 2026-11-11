@@ -32,7 +32,7 @@ backends.ssh.allowed-signers = "{{ .chezmoi.homeDir }}/.config/git/allowed_signe
 git-sign-on-push = "~signed() & mine()"
 
 [merge-tools.difft]
-diff-args = ["--color=always", "$left", "$right"]
+diff-args = ["--width=$width", "--color=always", "$left", "$right"]
 
 [merge-tools.bc]
 program = "bcomp"
